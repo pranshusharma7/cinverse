@@ -5,19 +5,10 @@ import {
   Maximize,
   Minimize,
   Tv,
-  AlertCircle,
-  Sparkles,
-  ChevronRight,
   Film,
-  Youtube,
-  FileVideo,
-  Server,
-  RefreshCw,
 } from 'lucide-react';
 import { Movie } from '@/lib/types';
 import { updateWatchProgress } from '@/lib/storage';
-import { playGlassClick, playGlassHover } from '@/lib/sound';
-import { UnifiedPlayer } from './UnifiedPlayer';
 
 interface VideoPlayerProps {
   movie: Movie;
@@ -34,8 +25,6 @@ interface VideoPlayerProps {
   onEpisodeChange?: (season: number, episode: number) => void;
 }
 
-export type StreamServerType = 'nxsha' | 'vidsrc' | 'autoembed';
-
 export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   movie,
   embedUrl,
@@ -48,8 +37,6 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   onEpisodeChange,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [playerMode, setPlayerMode] = useState<'stream' | 'youtube' | 'local'>('stream');
-  const [streamServer, setStreamServer] = useState<StreamServerType>('nxsha');
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isTheatreMode, setIsTheatreMode] = useState(false);
   const [iframeLoaded, setIframeLoaded] = useState(false);
@@ -57,28 +44,12 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   // Compute verified TMDB ID
   const effectiveId = movie.tmdbId || (/^\d+$/.test(movie.id) ? movie.id : 550);
 
-  // Dynamic server embed generator
-  const getServerEmbedUrl = (server: StreamServerType): string => {
-    if (server === 'vidsrc') {
-      return movie.type === 'tv'
-        ? `https://vidsrc.to/embed/tv/${effectiveId}/${season}/${episode}`
-        : `https://vidsrc.to/embed/movie/${effectiveId}`;
-    }
-    if (server === 'autoembed') {
-      return movie.type === 'tv'
-        ? `https://player.autoembed.cc/embed/tv/${effectiveId}/${season}/${episode}`
-        : `https://player.autoembed.cc/embed/movie/${effectiveId}`;
-    }
-    // Default server 1: nxsha.space
-    return (
-      embedUrl ||
-      (movie.type === 'tv'
-        ? `https://nxsha.space/embed/tv/${effectiveId}/${season}/${episode}?color=green`
-        : `https://nxsha.space/embed/movie/${effectiveId}?color=green`)
-    );
-  };
-
-  const activeStreamUrl = getServerEmbedUrl(streamServer);
+  // Direct nxsha.space stream embed URL (single dedicated server)
+  const activeStreamUrl =
+    embedUrl ||
+    (movie.type === 'tv'
+      ? `https://nxsha.space/embed/tv/${effectiveId}/${season}/${episode}?color=green`
+      : `https://nxsha.space/embed/movie/${effectiveId}?color=green`);
 
   // Save to continue watching when opened
   useEffect(() => {
@@ -95,13 +66,12 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
     );
   }, [movie.id, activeStreamUrl]);
 
-  // Reset iframe loading state when server or episode changes
+  // Reset iframe loading state when episode changes
   useEffect(() => {
     setIframeLoaded(false);
-  }, [streamServer, season, episode, movie.id]);
+  }, [season, episode, movie.id]);
 
   const toggleFullscreen = () => {
-    playGlassClick();
     if (!containerRef.current) return;
     if (!document.fullscreenElement) {
       containerRef.current.requestFullscreen().catch(console.error);
@@ -113,42 +83,8 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   };
 
   const toggleTheatre = () => {
-    playGlassClick();
     setIsTheatreMode((prev) => !prev);
   };
-
-  // If user selected YouTube or Local player mode, render UnifiedPlayer
-  if (playerMode === 'youtube' || playerMode === 'local') {
-    return (
-      <div className="w-full flex flex-col gap-4">
-        {/* Return back to movie stream pill */}
-        <div className="flex items-center justify-between px-2">
-          <button
-            onClick={() => {
-              playGlassClick();
-              setPlayerMode('stream');
-            }}
-            onMouseEnter={playGlassHover}
-            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-slate-900/10 hover:bg-slate-900/20 text-slate-800 text-xs font-bold transition border border-white"
-          >
-            <Film className="w-3.5 h-3.5 text-indigo-600" />
-            <span>← Back to {movie.title} Cinema Stream</span>
-          </button>
-        </div>
-
-        <UnifiedPlayer
-          initialMode={playerMode}
-          initialYouTubeUrl={movie.trailerUrl}
-          movie={movie}
-          embedUrl={activeStreamUrl}
-          onModeChange={(m) => {
-            if (m === 'stream') setPlayerMode('stream');
-            else setPlayerMode(m);
-          }}
-        />
-      </div>
-    );
-  }
 
   return (
     <div
@@ -172,82 +108,13 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
           )}
         </div>
 
-        {/* Right Source Switcher & Mode Buttons */}
-        <div className="flex items-center gap-2 pointer-events-auto flex-wrap">
-          {/* Multi-Server Stream Selector */}
-          <div className="flex items-center gap-1 bg-black/65 backdrop-blur-xl p-1 rounded-full border border-white/20 text-[11px] font-bold text-white shadow-lg">
-            <span className="text-slate-400 pl-2 pr-1 text-[10px] hidden sm:inline">Server:</span>
-            <button
-              onClick={() => {
-                playGlassClick();
-                setStreamServer('nxsha');
-              }}
-              className={`px-2.5 py-1 rounded-full transition ${
-                streamServer === 'nxsha'
-                  ? 'bg-emerald-600 text-white shadow-xs'
-                  : 'text-slate-300 hover:text-white'
-              }`}
-              title="Server 1: nxsha.space (Default)"
-            >
-              Nxsha
-            </button>
-            <button
-              onClick={() => {
-                playGlassClick();
-                setStreamServer('vidsrc');
-              }}
-              className={`px-2.5 py-1 rounded-full transition ${
-                streamServer === 'vidsrc'
-                  ? 'bg-indigo-600 text-white shadow-xs'
-                  : 'text-slate-300 hover:text-white'
-              }`}
-              title="Server 2: VidSrc"
-            >
-              VidSrc
-            </button>
-            <button
-              onClick={() => {
-                playGlassClick();
-                setStreamServer('autoembed');
-              }}
-              className={`px-2.5 py-1 rounded-full transition ${
-                streamServer === 'autoembed'
-                  ? 'bg-purple-600 text-white shadow-xs'
-                  : 'text-slate-300 hover:text-white'
-              }`}
-              title="Server 3: AutoEmbed"
-            >
-              AutoEmbed
-            </button>
+        {/* Right Controls */}
+        <div className="flex items-center gap-2 pointer-events-auto">
+          {/* Active Server Badge (nxsha.space) */}
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-xl border border-white/20 text-white text-[11px] font-bold shadow-lg">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span>nxsha.space</span>
           </div>
-
-          {/* Quick Switch to YouTube Button */}
-          <button
-            onClick={() => {
-              playGlassClick();
-              setPlayerMode('youtube');
-            }}
-            onMouseEnter={playGlassHover}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-rose-600/80 hover:bg-rose-600 text-white text-[11px] font-bold border border-white/30 backdrop-blur-xl transition shadow-lg"
-            title="Switch to YouTube Player (Instant Paste)"
-          >
-            <Youtube className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">YouTube</span>
-          </button>
-
-          {/* Quick Switch to Local Video Button */}
-          <button
-            onClick={() => {
-              playGlassClick();
-              setPlayerMode('local');
-            }}
-            onMouseEnter={playGlassHover}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-indigo-600/80 hover:bg-indigo-600 text-white text-[11px] font-bold border border-white/30 backdrop-blur-xl transition shadow-lg"
-            title="Play Local Video File"
-          >
-            <FileVideo className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Local Video</span>
-          </button>
 
           {/* Theatre Mode */}
           <button
@@ -269,13 +136,13 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
         </div>
       </div>
 
-      {/* Main Streaming Display (Iframe Embed) */}
+      {/* Main Streaming Display (Direct nxsha.space Iframe Embed) */}
       <div className="relative w-full h-full flex-1 bg-black">
         {!iframeLoaded && (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-slate-950 text-white z-10">
             <div className="w-8 h-8 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin" />
             <span className="text-xs font-semibold text-slate-400">
-              Connecting to {streamServer === 'nxsha' ? 'nxsha.space' : streamServer === 'vidsrc' ? 'vidsrc.to' : 'autoembed.cc'} stream...
+              Connecting to nxsha.space stream...
             </span>
           </div>
         )}
@@ -302,7 +169,6 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
               <button
                 key={epNum}
                 onClick={() => {
-                  playGlassClick();
                   onEpisodeChange?.(season, epNum);
                 }}
                 className={`px-3 py-1 rounded-xl text-xs font-bold transition shrink-0 ${
