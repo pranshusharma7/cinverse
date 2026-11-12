@@ -22,7 +22,10 @@ function setCached(key: string, data: any) {
 
 export function getTmdbAuth(): { key?: string; token?: string; isConfigured: boolean } {
   const token = process.env.TMDB_ACCESS_TOKEN || process.env.TMDB_READ_ACCESS_TOKEN;
-  const key = process.env.TMDB_API_KEY || process.env.NEXT_PUBLIC_TMDB_API_KEY;
+  const key =
+    process.env.TMDB_API_KEY ||
+    process.env.NEXT_PUBLIC_TMDB_API_KEY ||
+    '4e44d9029b1270a757cddc766a1bcb63';
   return {
     key,
     token,
