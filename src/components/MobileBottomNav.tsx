@@ -15,17 +15,17 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({ onOpenSearch }
   const pathname = usePathname();
 
   const navItems = [
-    { label: 'Home', href: '/', icon: Home },
+    { label: 'Archive', href: '/', icon: Home },
     { label: 'Explore', href: '/explore', icon: Compass },
-    { label: 'Movies', href: '/movies', icon: Film },
-    { label: 'TV', href: '/tv', icon: Tv },
+    { label: 'Films', href: '/movies', icon: Film },
+    { label: 'Series', href: '/tv', icon: Tv },
     { label: 'Anime', href: '/anime', icon: Sparkles },
     { label: 'Watchlist', href: '/playlist', icon: BookmarkCheck },
   ];
 
   return (
     <nav className="lg:hidden fixed bottom-2.5 sm:bottom-4 left-1/2 -translate-x-1/2 z-40 w-[96%] max-w-md select-none">
-      <div className="liquid-glass-panel px-2 sm:px-3 py-1.5 sm:py-2 rounded-full flex items-center justify-around border border-white shadow-2xl backdrop-blur-3xl bg-white/95">
+      <div className="px-2 sm:px-3 py-1.5 sm:py-2 rounded-full flex items-center justify-around border border-[#E5DDD2] shadow-2xl backdrop-blur-3xl bg-[#FFFDFB]/95">
         {navItems.map((item) => {
           const isActive =
             item.href === '/'
@@ -41,18 +41,18 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({ onOpenSearch }
               onClick={playGlassClick}
               onMouseEnter={playGlassHover}
               className={`relative flex flex-col items-center gap-0.5 p-1 sm:p-1.5 rounded-full transition-all ${
-                isActive ? 'text-indigo-600 font-bold' : 'text-slate-600 hover:text-slate-950'
+                isActive ? 'text-[#7A242B] font-bold' : 'text-[#695155] hover:text-[#231215]'
               }`}
             >
               {isActive && (
                 <motion.div
-                  layoutId="mobileActiveDockIndicatorLight"
-                  className="absolute inset-0 bg-white rounded-full border border-white shadow-xs"
+                  layoutId="mobileActiveDockIndicator"
+                  className="absolute inset-0 bg-[#F4ECE1] rounded-full border border-[#E5DDD2] shadow-xs"
                   transition={{ type: 'spring', stiffness: 350, damping: 25 }}
                 />
               )}
               <Icon className="w-4 h-4 relative z-10" />
-              <span className="text-[9px] font-bold tracking-tight relative z-10">
+              <span className="text-[9px] font-medium tracking-tight relative z-10">
                 {item.label}
               </span>
             </Link>
@@ -65,11 +65,11 @@ export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({ onOpenSearch }
             onOpenSearch();
           }}
           onMouseEnter={playGlassHover}
-          className="flex flex-col items-center gap-0.5 p-1 sm:p-1.5 rounded-full text-slate-600 hover:text-slate-950 transition"
+          className="flex flex-col items-center gap-0.5 p-1 sm:p-1.5 rounded-full text-[#695155] hover:text-[#231215] transition"
           aria-label="Search"
         >
           <Search className="w-4 h-4" />
-          <span className="text-[9px] font-bold tracking-tight">Search</span>
+          <span className="text-[9px] font-medium tracking-tight">Search</span>
         </button>
       </div>
     </nav>

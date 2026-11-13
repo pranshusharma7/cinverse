@@ -14,6 +14,7 @@ import {
   Calendar,
   Plus,
   Check,
+  Sparkles,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Movie } from '@/lib/types';
@@ -23,25 +24,6 @@ import { addToPlaylist, removeFromPlaylist, isInPlaylist } from '@/lib/storage';
 interface HeroSectionProps {
   movies: Movie[];
   onOpenDetails?: (movie: Movie) => void;
-}
-
-// Generate dynamic atmospheric ambient colors per movie based on genres or title
-function getHeroPalette(movie: Movie): { primary: string; secondary: string } {
-  const genres = (movie.genres || []).map((g) => g.toLowerCase());
-  if (genres.includes('sci-fi') || genres.includes('science fiction')) {
-    return { primary: 'rgba(6, 182, 212, 0.22)', secondary: 'rgba(139, 92, 246, 0.18)' };
-  }
-  if (genres.includes('horror') || genres.includes('mystery')) {
-    return { primary: 'rgba(225, 29, 72, 0.24)', secondary: 'rgba(147, 51, 234, 0.16)' };
-  }
-  if (genres.includes('drama') || genres.includes('crime')) {
-    return { primary: 'rgba(16, 185, 129, 0.20)', secondary: 'rgba(245, 158, 11, 0.16)' };
-  }
-  if (genres.includes('comedy') || genres.includes('romance')) {
-    return { primary: 'rgba(236, 72, 153, 0.22)', secondary: 'rgba(251, 146, 60, 0.18)' };
-  }
-  // Default action / superhero: indigo + rose
-  return { primary: 'rgba(99, 102, 241, 0.22)', secondary: 'rgba(244, 63, 94, 0.16)' };
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ movies, onOpenDetails }) => {
@@ -64,19 +46,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ movies, onOpenDetails 
     return () => window.removeEventListener('playlist_changed', handleUpdate);
   }, [currentMovie]);
 
-  // Broadcast hero palette to the ambient BackgroundMesh on slide change
-  useEffect(() => {
-    if (!currentMovie) return;
-    const palette = getHeroPalette(currentMovie);
-    if (typeof window !== 'undefined') {
-      window.dispatchEvent(
-        new CustomEvent('hero_color_changed', {
-          detail: palette,
-        })
-      );
-    }
-  }, [currentMovie]);
-
   const handleNext = useCallback(() => {
     playGlassClick();
     if (featuredList.length === 0) return;
@@ -93,7 +62,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ movies, onOpenDetails 
     if (featuredList.length <= 1) return;
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % featuredList.length);
-    }, 9000);
+    }, 10000);
 
     return () => clearInterval(interval);
   }, [featuredList.length]);
@@ -121,188 +90,221 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ movies, onOpenDetails 
   };
 
   return (
-    <div className="relative w-full h-[420px] sm:h-[460px] md:h-[500px] rounded-3xl sm:rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/20 group liquid-gloss select-none">
-      {/* Background artwork with smooth visionOS crossfade */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={currentMovie.id}
-          initial={{ opacity: 0, scale: 1.08 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.98 }}
-          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-          className="absolute inset-0 bg-cover bg-center"
-          style={{
-            backgroundImage: `url(${currentMovie.backdropUrl || currentMovie.posterUrl})`,
-          }}
-        >
-          {/* Multi-stop bottom-left cinematic vignette gradients */}
-          <div className="absolute inset-0 bg-gradient-to-r from-[#06070B] via-[#06070B]/75 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#06070B] via-[#06070B]/50 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-transparent" />
-        </motion.div>
-      </AnimatePresence>
+    <div className="w-full bg-[#FFFDFB] rounded-3xl sm:rounded-[2.5rem] border border-[#E5DDD2] p-6 sm:p-9 lg:p-11 shadow-[0_12px_40px_-15px_rgba(45,18,22,0.06)] relative overflow-hidden select-none">
+      {/* Background Subtle Sunlit Gradient */}
+      <div className="absolute top-0 right-0 w-2/3 h-full bg-gradient-to-l from-[#FAF4EC]/70 via-[#FFFDFB]/40 to-transparent pointer-events-none" />
 
-      {/* Hero Content Stage */}
-      <div className="relative z-10 w-full h-full flex flex-col justify-between p-4 sm:p-7 md:p-10">
-        {/* Top Badges & Micro-Labels */}
-        <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap">
-          {currentMovie.isTrending && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="flex items-center gap-1.5 px-3 py-0.5 sm:px-3.5 sm:py-1 rounded-full bg-rose-500/20 border border-rose-500/40 text-rose-300 text-[11px] sm:text-xs font-bold backdrop-blur-xl shadow-lg"
-            >
-              <Flame className="w-3.5 h-3.5 fill-rose-400 text-rose-400" />
-              <span>Trending Spotlight</span>
-            </motion.div>
-          )}
+      {/* Asymmetric Split Layout: Left Editorial Typography & Right Framed Cinema Artwork */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center relative z-10">
+        
+        {/* ========================================================
+            LEFT (7 COLS): LITERARY HEADLINE & EDITORIAL CONTROLS
+        ======================================================== */}
+        <div className="lg:col-span-7 flex flex-col justify-between space-y-5 sm:space-y-6">
+          {/* Editorial Micro-Label / Curator Note */}
+          <div className="flex items-center gap-3">
+            <span className="font-serif italic text-xs tracking-[0.2em] uppercase text-[#7A242B] font-semibold">
+              Curator's Spotlight • Vol. IX
+            </span>
+            <div className="h-px w-10 bg-[#E5DDD2]" />
+            {currentMovie.isTrending && (
+              <span className="px-2.5 py-0.5 rounded-full bg-[#F6ECE6] border border-[#E9DDD0] text-[10px] font-sans font-bold text-[#7A242B] uppercase tracking-wider">
+                Festival Winner
+              </span>
+            )}
+          </div>
 
-          {/* Floating Glass Genre Pills */}
-          <div className="flex items-center gap-1.5 flex-wrap">
-            {currentMovie.genres?.slice(0, 3).map((genre) => (
+          {/* Large Editorial Serif Headline (Inspired by Reference) */}
+          <div className="space-y-2">
+            <AnimatePresence mode="wait">
+              <motion.h1
+                key={`title-${currentMovie.id}`}
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                className="font-serif text-3xl sm:text-5xl lg:text-[3.6rem] font-bold text-[#231215] leading-[1.08] tracking-tight"
+              >
+                {currentMovie.title}
+              </motion.h1>
+            </AnimatePresence>
+
+            {/* Tagline / Subtitle in Refined Serif Italic */}
+            <p className="font-serif italic text-base sm:text-lg text-[#6E4E52]">
+              Experience Cinematic Poetry &amp; Modern Narrative
+            </p>
+          </div>
+
+          {/* Film Metadata Pills */}
+          <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap text-xs">
+            {currentMovie.rating ? (
+              <span className="flex items-center gap-1 px-3 py-1 rounded-full bg-[#FAF5EE] border border-[#E8DFD4] font-bold text-[#7A242B] tabular-nums shadow-xs">
+                <Star className="w-3.5 h-3.5 fill-[#C27803] text-[#C27803]" />
+                IMDb {currentMovie.rating.toFixed(1)}
+              </span>
+            ) : null}
+
+            {currentMovie.runtime && (
+              <span className="flex items-center gap-1 px-3 py-1 rounded-full bg-[#FAF5EE] border border-[#E8DFD4] text-[#5C4548] font-medium tabular-nums">
+                <Clock className="w-3 h-3 text-[#7A242B]" />
+                {currentMovie.runtime}
+              </span>
+            )}
+
+            {currentMovie.releaseYear && (
+              <span className="flex items-center gap-1 px-3 py-1 rounded-full bg-[#FAF5EE] border border-[#E8DFD4] text-[#5C4548] font-medium tabular-nums">
+                <Calendar className="w-3 h-3 text-[#7A242B]" />
+                {currentMovie.releaseYear}
+              </span>
+            )}
+
+            {currentMovie.genres?.slice(0, 2).map((genre) => (
               <span
                 key={genre}
-                className="px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full bg-white/10 border border-white/20 text-white/90 text-[11px] sm:text-xs font-semibold backdrop-blur-xl shadow-sm"
+                className="px-3 py-1 rounded-full bg-[#F7F2EB] border border-[#E5DDD2] text-[#695155] font-medium"
               >
                 {genre}
               </span>
             ))}
           </div>
 
-          {/* Rating, Runtime, & Year */}
-          <div className="flex items-center gap-2 sm:gap-3 text-xs text-white/80 ml-1">
-            {currentMovie.rating ? (
-              <span className="flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-400/20 text-amber-300 font-bold border border-amber-400/30 backdrop-blur-md tabular-nums">
-                <Star className="w-3.5 h-3.5 fill-amber-300 text-amber-300" />
-                IMDb {currentMovie.rating.toFixed(1)}
-              </span>
-            ) : null}
-
-            {currentMovie.runtime && (
-              <span className="hidden sm:flex items-center gap-1 tabular-nums font-medium text-white/70">
-                <Clock className="w-3 h-3 text-indigo-400" />
-                {currentMovie.runtime}
-              </span>
-            )}
-
-            {currentMovie.releaseYear && (
-              <span className="hidden sm:flex items-center gap-1 tabular-nums font-medium text-white/70">
-                <Calendar className="w-3 h-3 text-indigo-400" />
-                {currentMovie.releaseYear}
-              </span>
-            )}
-          </div>
-        </div>
-
-        {/* Center / Bottom Info */}
-        <div className="max-w-2xl space-y-2.5 sm:space-y-3.5">
-          <motion.h1
-            key={`title-${currentMovie.id}`}
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-            className="text-2xl sm:text-4xl md:text-5xl font-black text-white tracking-display drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)] leading-[1.1]"
-          >
-            {currentMovie.title}
-          </motion.h1>
-
-          <motion.p
-            key={`desc-${currentMovie.id}`}
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.18, ease: [0.22, 1, 0.36, 1] }}
-            className="text-xs sm:text-sm text-white/85 line-clamp-2 sm:line-clamp-3 leading-relaxed drop-shadow max-w-xl font-normal"
-          >
+          {/* Curator's Synopsis */}
+          <p className="text-xs sm:text-sm text-[#5B4346] leading-relaxed line-clamp-3 max-w-xl font-normal">
             {currentMovie.overview}
-          </motion.p>
+          </p>
 
-          {/* Action CTAs: Watch Now + Details + Add to Watchlist */}
-          <div className="flex items-center gap-2 sm:gap-3 pt-2 flex-wrap">
+          {/* Action Buttons: Solid Terracotta Pill (Like Reference "Get Started") + Framed Notes */}
+          <div className="flex items-center gap-3 pt-2 flex-wrap">
             <Link
               href={`/watch/${currentMovie.id}`}
               onClick={playGlassClick}
               onMouseEnter={playGlassHover}
-              className="flex items-center gap-2 px-5 sm:px-7 py-2.5 sm:py-3 rounded-2xl bg-white hover:bg-white/95 text-slate-950 font-extrabold text-xs sm:text-sm shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 group/btn"
+              className="flex items-center gap-2 px-6 sm:px-8 py-3 rounded-full btn-terracotta font-sans text-xs sm:text-sm font-semibold tracking-wide"
             >
-              <Play className="w-4 h-4 fill-slate-950 text-slate-950 group-hover/btn:translate-x-0.5 transition-transform" />
-              <span>Watch Now</span>
+              <Play className="w-4 h-4 fill-current" />
+              <span>Watch Feature Film</span>
             </Link>
 
             <button
               onClick={handleDetailsClick}
               onMouseEnter={playGlassHover}
-              className="flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/25 text-white font-semibold text-xs sm:text-sm backdrop-blur-xl shadow-lg hover:scale-105 active:scale-95 transition-all duration-300"
+              className="flex items-center gap-2 px-5 sm:px-7 py-3 rounded-full bg-[#FAF7F2] hover:bg-[#F4ECE1] border border-[#DCD3C7] text-[#3D2528] font-medium text-xs sm:text-sm transition-all duration-300 shadow-xs hover:scale-102"
             >
-              <Info className="w-4 h-4 text-white" />
-              <span>More Details</span>
+              <Info className="w-4 h-4 text-[#7A242B]" />
+              <span>Film Archive &amp; Notes</span>
             </button>
 
             <button
               onClick={handleToggleWatchlist}
               onMouseEnter={playGlassHover}
-              className={`flex items-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 rounded-2xl border text-xs sm:text-sm font-semibold backdrop-blur-xl transition-all duration-300 hover:scale-105 active:scale-95 ${
+              aria-label={inWatchlist ? 'In Watchlist' : 'Add to Watchlist'}
+              className={`p-3 rounded-full border transition-all duration-300 ${
                 inWatchlist
-                  ? 'bg-indigo-600/80 border-indigo-400 text-white shadow-[0_0_15px_rgba(99,102,241,0.4)]'
-                  : 'bg-white/10 hover:bg-white/20 border-white/25 text-white/90 hover:text-white'
+                  ? 'bg-[#F4ECE1] border-[#7A242B] text-[#7A242B]'
+                  : 'bg-[#FAF7F2] hover:bg-[#F4ECE1] border-[#DCD3C7] text-[#5E474A]'
               }`}
             >
-              {inWatchlist ? (
-                <>
-                  <Check className="w-4 h-4 text-white" />
-                  <span>In Watchlist</span>
-                </>
-              ) : (
-                <>
-                  <Plus className="w-4 h-4 text-white" />
-                  <span>Add to Watchlist</span>
-                </>
-              )}
+              {inWatchlist ? <Check className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
             </button>
           </div>
-        </div>
 
-        {/* Bottom Carousel Navigation: Progress Dots & Chevrons */}
-        <div className="flex items-center justify-between pt-2">
-          {/* Progress Dots */}
-          <div className="flex items-center gap-2">
-            {featuredList.slice(0, 6).map((movie, idx) => (
+          {/* Bottom Film Index & Chevron Controls */}
+          <div className="flex items-center justify-between pt-4 border-t border-[#F0E8DD]">
+            <div className="flex items-center gap-2">
+              {featuredList.slice(0, 5).map((movie, idx) => (
+                <button
+                  key={movie.id}
+                  onClick={() => {
+                    playGlassClick();
+                    setCurrentIndex(idx);
+                  }}
+                  onMouseEnter={playGlassHover}
+                  aria-label={`Go to slide ${idx + 1}`}
+                  className="group py-1 flex items-center gap-1.5 transition-all"
+                >
+                  <span
+                    className={`text-[11px] font-mono transition-colors ${
+                      idx === currentIndex ? 'font-bold text-[#7A242B]' : 'text-[#A08E90]'
+                    }`}
+                  >
+                    0{idx + 1}
+                  </span>
+                  <div
+                    className="h-1 rounded-full transition-all duration-300"
+                    style={{
+                      width: idx === currentIndex ? '24px' : '8px',
+                      backgroundColor: idx === currentIndex ? '#7A242B' : '#E5DDD2',
+                    }}
+                  />
+                </button>
+              ))}
+            </div>
+
+            <div className="flex items-center gap-1.5">
               <button
-                key={movie.id}
-                onClick={() => {
-                  playGlassClick();
-                  setCurrentIndex(idx);
-                }}
+                onClick={handlePrev}
                 onMouseEnter={playGlassHover}
-                aria-label={`Go to slide ${idx + 1}`}
-                className="relative h-2 rounded-full transition-all duration-300 overflow-hidden"
-                style={{
-                  width: idx === currentIndex ? '28px' : '8px',
-                  backgroundColor: idx === currentIndex ? '#ffffff' : 'rgba(255, 255, 255, 0.25)',
-                }}
-              />
-            ))}
-          </div>
-
-          {/* Chevron Navigation Arrows */}
-          <div className="flex items-center gap-2">
-            <button
-              onClick={handlePrev}
-              onMouseEnter={playGlassHover}
-              aria-label="Previous movie"
-              className="p-2.5 rounded-full bg-white/10 hover:bg-white/25 border border-white/20 text-white backdrop-blur-xl transition hover:scale-110 active:scale-90 shadow-lg"
-            >
-              <ChevronLeft className="w-4 h-4" />
-            </button>
-            <button
-              onClick={handleNext}
-              onMouseEnter={playGlassHover}
-              aria-label="Next movie"
-              className="p-2.5 rounded-full bg-white/10 hover:bg-white/25 border border-white/20 text-white backdrop-blur-xl transition hover:scale-110 active:scale-90 shadow-lg"
-            >
-              <ChevronRight className="w-4 h-4" />
-            </button>
+                aria-label="Previous film"
+                className="p-2 rounded-full bg-[#FAF7F2] hover:bg-[#F2EAE0] border border-[#E5DDD2] text-[#4F3639] transition hover:scale-105 active:scale-95 shadow-xs"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <button
+                onClick={handleNext}
+                onMouseEnter={playGlassHover}
+                aria-label="Next film"
+                className="p-2 rounded-full bg-[#FAF7F2] hover:bg-[#F2EAE0] border border-[#E5DDD2] text-[#4F3639] transition hover:scale-105 active:scale-95 shadow-xs"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
           </div>
         </div>
+
+        {/* ========================================================
+            RIGHT (5 COLS): FRAMED ARTISANAL CINEMA STILL (Inspired by Reference Photo)
+        ======================================================== */}
+        <div className="lg:col-span-5 flex flex-col justify-center">
+          <div
+            onClick={() => router.push(`/watch/${currentMovie.id}`)}
+            className="group relative rounded-3xl sm:rounded-[2.2rem] overflow-hidden border-2 border-[#E8DFD3] shadow-[0_16px_40px_-10px_rgba(45,18,22,0.12)] cursor-pointer aspect-[4/5] sm:aspect-[4/4.8] bg-[#F5EFE6]"
+          >
+            {/* Framed Cinematic Photograph */}
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={currentMovie.id}
+                src={currentMovie.posterUrl || currentMovie.backdropUrl}
+                alt={currentMovie.title}
+                initial={{ opacity: 0, scale: 1.05 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.98 }}
+                transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              />
+            </AnimatePresence>
+
+            {/* Subtle Vignette Gradient for Depth */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#231215]/80 via-transparent to-transparent opacity-85 group-hover:opacity-75 transition-opacity" />
+
+            {/* Central Magnetic Play Emblem */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-16 h-16 sm:w-18 sm:h-18 rounded-full bg-[#7A242B]/90 backdrop-blur-md text-white flex items-center justify-center border-2 border-white/60 shadow-xl group-hover:scale-110 group-hover:bg-[#641C22] transition-all duration-300">
+                <Play className="w-6 h-6 fill-white text-white ml-0.5" />
+              </div>
+            </div>
+
+            {/* Bottom Caption Pill (Like Curated Gallery Tag) */}
+            <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white/95 text-xs z-10 px-4 py-2.5 rounded-2xl bg-black/40 backdrop-blur-md border border-white/20">
+              <span className="font-serif italic text-white truncate pr-2">
+                Curator's Screen Edition
+              </span>
+              <span className="text-[10px] font-mono tracking-wider uppercase font-semibold text-amber-200 shrink-0">
+                Direct nxsha stream
+              </span>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   );

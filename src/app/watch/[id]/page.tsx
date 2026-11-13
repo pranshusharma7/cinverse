@@ -87,8 +87,8 @@ function WatchContent() {
   if (loading) {
     return (
       <div className="w-full h-96 flex flex-col items-center justify-center gap-3">
-        <div className="w-8 h-8 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin" />
-        <span className="text-xs text-slate-500 font-semibold">Connecting to nxsha.space dynamic stream...</span>
+        <div className="w-8 h-8 border-2 border-[#7A242B] border-t-transparent rounded-full animate-spin" />
+        <span className="text-xs text-[#7A6165] font-serif">Connecting to cinema stream...</span>
       </div>
     );
   }
@@ -96,38 +96,38 @@ function WatchContent() {
   if (!movie) return null;
 
   return (
-    <div className="w-full space-y-6">
+    <div className="w-full space-y-6 select-none">
       {/* Top back pill */}
       <div className="flex items-center justify-between">
         <button
           onClick={() => { playGlassClick(); router.back(); }}
           onMouseEnter={playGlassHover}
-          className="flex items-center gap-2 px-4 py-2 rounded-full liquid-glass-pill text-xs font-bold text-slate-700 hover:text-slate-950 transition shadow-sm"
+          className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#FFFDFB] hover:bg-[#FAF6F0] border border-[#E5DDD2] text-xs font-semibold text-[#54383B] transition shadow-xs"
         >
-          <ArrowLeft className="w-3.5 h-3.5" />
-          <span>Exit Player</span>
+          <ArrowLeft className="w-3.5 h-3.5 text-[#7A242B]" />
+          <span>Exit Salon Screening</span>
         </button>
 
         <div className="flex items-center gap-2">
           {/* Active provider pill */}
-          <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold shadow-sm">
-            <Sparkles className="w-3.5 h-3.5" />
+          <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-[#FAF5EE] border border-[#E8DFD4] text-[#7A242B] text-xs font-medium shadow-xs">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             <span>nxsha.space Connected</span>
           </div>
 
           <button
             onClick={togglePlaylist}
             onMouseEnter={playGlassHover}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-full liquid-glass-pill text-xs font-bold text-slate-700 hover:text-slate-950 transition shadow-sm"
+            className="flex items-center gap-1.5 px-4 py-2 rounded-full bg-[#FFFDFB] hover:bg-[#FAF6F0] border border-[#E5DDD2] text-xs font-medium text-[#54383B] transition shadow-xs"
           >
-            {inList ? <Check className="w-3.5 h-3.5 text-indigo-600" /> : <BookmarkPlus className="w-3.5 h-3.5" />}
-            <span>{inList ? 'Saved in Playlist' : 'Save to Playlist'}</span>
+            {inList ? <Check className="w-3.5 h-3.5 text-[#7A242B]" /> : <BookmarkPlus className="w-3.5 h-3.5" />}
+            <span>{inList ? 'In Watchlist' : 'Add to Watchlist'}</span>
           </button>
         </div>
       </div>
 
-      {/* Main Video Player Component with Liquid Glass Frame */}
-      <div className="w-full rounded-[36px] p-2 liquid-glass-panel border-2 border-white shadow-2xl backdrop-blur-3xl">
+      {/* Main Video Player Component with Warm Frame */}
+      <div className="w-full rounded-3xl sm:rounded-[2.4rem] p-2 bg-black border border-[#E5DDD2] shadow-2xl">
         <VideoPlayer
           movie={movie}
           embedUrl={streamData?.embedUrl}
@@ -142,32 +142,32 @@ function WatchContent() {
       </div>
 
       {/* Movie Meta Information Bar */}
-      <div className="p-5 sm:p-6 rounded-[2rem] bg-white/90 backdrop-blur-2xl border-2 border-white shadow-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-slate-900">
+      <div className="p-5 sm:p-7 rounded-3xl bg-[#FFFDFB] border border-[#E5DDD2] shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-[#231215]">
         <div className="space-y-1">
           <div className="flex items-center gap-2.5">
-            <h1 className="text-lg sm:text-xl font-black text-slate-900">{movie.title}</h1>
+            <h1 className="font-serif text-lg sm:text-2xl font-bold text-[#231215]">{movie.title}</h1>
             {movie.rating ? (
-              <span className="flex items-center gap-1 text-xs font-black text-amber-600 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200 shadow-2xs">
-                <Star className="w-3 h-3 fill-amber-400 text-amber-500" />
+              <span className="flex items-center gap-1 text-xs font-bold text-[#231215] bg-[#FAF5EE] px-2.5 py-0.5 rounded-full border border-[#E8DFD4] shadow-xs">
+                <Star className="w-3 h-3 fill-[#C27803] text-[#C27803]" />
                 {movie.rating.toFixed(1)}
               </span>
             ) : null}
             {movie.type === 'tv' && (
-              <span className="text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">
+              <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-[#FAF5EE] text-[#7A242B] border border-[#E8DFD4]">
                 Season {season} Episode {episode}
               </span>
             )}
           </div>
-          <p className="text-xs text-slate-600 font-normal line-clamp-2 max-w-2xl">{movie.overview}</p>
+          <p className="text-xs sm:text-sm text-[#6E5558] font-normal line-clamp-2 max-w-2xl">{movie.overview}</p>
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
           <Link
             href={`/movie/${movie.id}?type=${movie.type}`}
             onClick={playGlassClick}
-            className="px-5 py-2.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-xs font-bold text-white transition shadow-md shadow-indigo-600/25"
+            className="px-6 py-2.5 rounded-full btn-terracotta text-xs font-semibold text-white transition shadow-sm"
           >
-            Movie Info &amp; Cast
+            Film Notes &amp; Cast
           </Link>
         </div>
       </div>
@@ -175,7 +175,7 @@ function WatchContent() {
       {/* Similar Movies Carousel */}
       {movie.similar && movie.similar.length > 0 && (
         <section className="space-y-3 pt-2">
-          <h2 className="text-sm font-extrabold text-slate-900 tracking-wide">More Like This</h2>
+          <h2 className="font-serif text-base font-bold text-[#231215] tracking-tight">Curatorial Similar Screenings</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
             {movie.similar.map((item) => (
               <MovieCard key={item.id} movie={item} />
@@ -189,7 +189,7 @@ function WatchContent() {
 
 export default function WatchMoviePage() {
   return (
-    <Suspense fallback={<div className="py-20 text-center text-slate-500 text-xs font-semibold">Connecting to player...</div>}>
+    <Suspense fallback={<div className="py-20 text-center text-[#786164] font-serif text-xs">Connecting to screening salon...</div>}>
       <WatchContent />
     </Suspense>
   );

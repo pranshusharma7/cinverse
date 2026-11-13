@@ -48,7 +48,6 @@ function MovieDetailsContent() {
         setMovie(data);
         setInList(isInPlaylist(data.id));
 
-        // If it's a TV show, load first season episodes
         if (data.type === 'tv') {
           loadSeasonEpisodes(data.tmdbId || data.id, 1);
         }
@@ -71,7 +70,6 @@ function MovieDetailsContent() {
       if (res.data && res.data.length > 0) {
         setEpisodesList(res.data);
       } else {
-        // Fallback episodes
         setEpisodesList(
           Array.from({ length: 8 }).map((_, i) => ({
             episodeNumber: i + 1,
@@ -111,8 +109,8 @@ function MovieDetailsContent() {
   if (loading) {
     return (
       <div className="w-full h-96 flex flex-col items-center justify-center gap-3">
-        <div className="w-8 h-8 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin" />
-        <span className="text-xs text-slate-500 font-semibold">Loading universal cinema details...</span>
+        <div className="w-8 h-8 border-2 border-[#7A242B] border-t-transparent rounded-full animate-spin" />
+        <span className="text-xs text-[#7A6165] font-serif">Retrieving curated cinema folios...</span>
       </div>
     );
   }
@@ -120,9 +118,9 @@ function MovieDetailsContent() {
   if (!movie) {
     return (
       <div className="py-20 text-center space-y-4">
-        <h2 className="text-lg font-bold text-slate-900">Movie not found</h2>
-        <Link href="/" className="px-5 py-2 rounded-full liquid-glass-pill text-xs font-semibold">
-          Return to Universe
+        <h2 className="font-serif text-lg font-bold text-[#231215]">Cinematic work not found</h2>
+        <Link href="/" className="px-6 py-2.5 rounded-full btn-terracotta text-xs font-medium">
+          Return to Film Salon
         </Link>
       </div>
     );
@@ -134,34 +132,34 @@ function MovieDetailsContent() {
     : `/watch/${movie.id}`;
 
   return (
-    <div className="w-full space-y-8">
+    <div className="w-full space-y-8 select-none">
       {/* Top navigation row */}
       <div className="flex items-center justify-between">
         <button
           onClick={() => { playGlassClick(); router.back(); }}
           onMouseEnter={playGlassHover}
-          className="flex items-center gap-2 px-4 py-2 rounded-full liquid-glass-pill text-xs font-bold text-slate-700 hover:text-slate-950 transition shadow-xs"
+          className="flex items-center gap-2 px-4 py-2 rounded-full bg-[#FFFDFB] hover:bg-[#FAF6F0] border border-[#E5DDD2] text-xs font-semibold text-[#54383B] transition shadow-xs"
         >
-          <ArrowLeft className="w-3.5 h-3.5" />
+          <ArrowLeft className="w-3.5 h-3.5 text-[#7A242B]" />
           <span>Back</span>
         </button>
       </div>
 
       {/* Hero Showcase Container with Large Cinematic Backdrop */}
-      <div className="relative w-full rounded-[2.5rem] overflow-hidden border border-white/20 shadow-2xl bg-[#0c0e18]/90 liquid-gloss">
+      <div className="relative w-full rounded-3xl sm:rounded-[2.4rem] overflow-hidden border border-[#E5DDD2] shadow-sm bg-[#FFFDFB]">
         {/* Backdrop Image */}
         <div
-          className="absolute inset-0 bg-cover bg-center filter brightness-95 scale-102"
+          className="absolute inset-0 bg-cover bg-center filter brightness-95"
           style={{ backgroundImage: `url(${movie.backdropUrl || movie.posterUrl})` }}
         />
         {/* Gradients */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#06070B] via-[#06070B]/80 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#06070B] via-[#06070B]/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#231215] via-[#231215]/85 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#231215] via-[#231215]/40 to-transparent" />
 
         {/* Content Container */}
         <div className="relative z-10 p-6 sm:p-10 flex flex-col md:flex-row gap-8 items-start">
           {/* Movie Poster */}
-          <div className="w-48 sm:w-60 aspect-[2/3] rounded-3xl overflow-hidden border border-white/25 shadow-2xl shrink-0 group">
+          <div className="w-48 sm:w-60 aspect-[2/3] rounded-3xl overflow-hidden border-2 border-white/30 shadow-2xl shrink-0 group">
             <img
               src={movie.posterUrl || movie.backdropUrl}
               alt={movie.title}
@@ -173,56 +171,56 @@ function MovieDetailsContent() {
           <div className="flex-1 space-y-4">
             {/* Badges */}
             <div className="flex items-center gap-2 flex-wrap">
-              <span className={`px-3 py-1 rounded-full text-xs font-extrabold uppercase shadow-sm ${
-                isTv ? 'bg-sky-500 text-white' : 'bg-emerald-600 text-white'
+              <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase shadow-sm ${
+                isTv ? 'bg-[#7A242B] text-white' : 'bg-[#541B21] text-white'
               }`}>
-                {isTv ? 'TV Series' : 'Feature Film'}
+                {isTv ? 'Episodic Series' : 'Feature Film'}
               </span>
 
               {movie.genres.map((g) => (
                 <span
                   key={g}
-                  className="px-3 py-1 rounded-full bg-white/20 border border-white/30 text-xs text-white backdrop-blur-md font-bold shadow-sm"
+                  className="px-3 py-1 rounded-full bg-white/20 border border-white/30 text-xs text-white backdrop-blur-md font-medium shadow-xs"
                 >
                   {g}
                 </span>
               ))}
-              <span className="flex items-center gap-1 text-xs font-extrabold px-3 py-1 rounded-full bg-amber-400/30 text-amber-300 border border-amber-400/40 shadow-sm">
-                <Star className="w-3.5 h-3.5 fill-amber-300" />
+              <span className="flex items-center gap-1 text-xs font-bold px-3 py-1 rounded-full bg-[#FAF5EE]/95 text-[#231215] border border-[#E8DFD4] shadow-xs tabular-nums">
+                <Star className="w-3.5 h-3.5 fill-[#C27803] text-[#C27803]" />
                 {movie.rating.toFixed(1)}
               </span>
             </div>
 
             {/* Title */}
-            <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight drop-shadow-md">
+            <h1 className="font-serif text-3xl sm:text-5xl font-bold text-white tracking-tight leading-tight drop-shadow-md">
               {movie.title}
             </h1>
 
             {/* Meta Row */}
             <div className="flex items-center gap-4 text-xs text-white/80 font-medium">
               <span className="flex items-center gap-1.5">
-                <Calendar className="w-3.5 h-3.5 text-indigo-300" />
+                <Calendar className="w-3.5 h-3.5 text-amber-200" />
                 {movie.releaseDate || movie.releaseYear}
               </span>
               {movie.runtime && (
                 <span className="flex items-center gap-1.5">
-                  <Clock className="w-3.5 h-3.5 text-indigo-300" />
+                  <Clock className="w-3.5 h-3.5 text-amber-200" />
                   {movie.runtime}
                 </span>
               )}
               {isTv && movie.seasons && (
                 <span className="flex items-center gap-1.5">
-                  <Tv className="w-3.5 h-3.5 text-sky-300" />
+                  <Tv className="w-3.5 h-3.5 text-amber-200" />
                   {movie.seasons} Season{movie.seasons > 1 ? 's' : ''}
                 </span>
               )}
               {movie.director && (
-                <span>Director: <strong className="text-white font-bold">{movie.director}</strong></span>
+                <span>Auteur / Director: <strong className="text-white font-bold">{movie.director}</strong></span>
               )}
             </div>
 
             {/* Overview */}
-            <p className="text-xs sm:text-sm text-white/85 leading-relaxed max-w-2xl pt-1 drop-shadow">
+            <p className="text-xs sm:text-sm text-white/90 leading-relaxed max-w-2xl pt-1 font-normal">
               {movie.overview}
             </p>
 
@@ -232,32 +230,32 @@ function MovieDetailsContent() {
                 href={watchUrl}
                 onClick={playGlassClick}
                 onMouseEnter={playGlassHover}
-                className="flex items-center gap-2 px-7 py-3 rounded-full bg-white text-slate-950 font-black text-sm shadow-xl hover:bg-white/95 hover:scale-105 active:scale-95 transition-all group/play"
+                className="flex items-center gap-2 px-8 py-3 rounded-full btn-terracotta text-white font-semibold text-xs sm:text-sm tracking-wide shadow-md"
               >
-                <Play className="w-4 h-4 fill-slate-950 group-hover/play:translate-x-0.5 transition-transform" />
-                <span>{isTv ? 'Watch Episodes' : 'Watch Now'}</span>
+                <Play className="w-4 h-4 fill-white" />
+                <span>{isTv ? 'Screen Episodes' : 'Screen Feature Film'}</span>
               </Link>
 
               <button
                 onClick={() => { playGlassClick(); setTrailerModalOpen(true); }}
                 onMouseEnter={playGlassHover}
-                className="flex items-center gap-2 px-6 py-3 rounded-full bg-white/20 hover:bg-white/30 border border-white/40 text-white font-bold text-xs sm:text-sm backdrop-blur-xl shadow-lg hover:scale-105 active:scale-95 transition-all"
+                className="flex items-center gap-2 px-6 py-3 rounded-full bg-white/20 hover:bg-white/30 border border-white/30 text-white font-medium text-xs sm:text-sm backdrop-blur-xl shadow-xs transition"
               >
                 <Film className="w-4 h-4 text-white" />
-                <span>Trailer</span>
+                <span>Trailer Preview</span>
               </button>
 
               <button
                 onClick={togglePlaylist}
                 onMouseEnter={playGlassHover}
-                className={`flex items-center gap-2 px-6 py-3 rounded-full border-2 text-xs sm:text-sm font-bold backdrop-blur-xl transition-all shadow-lg hover:scale-105 active:scale-95 ${
+                className={`flex items-center gap-2 px-6 py-3 rounded-full border text-xs sm:text-sm font-medium backdrop-blur-xl transition shadow-xs ${
                   inList
-                    ? 'bg-indigo-600 border-indigo-400 text-white'
-                    : 'bg-white/20 hover:bg-white/30 border-white/40 text-white'
+                    ? 'bg-[#7A242B] border-[#7A242B] text-white'
+                    : 'bg-white/20 hover:bg-white/30 border-white/30 text-white'
                 }`}
               >
-                {inList ? <Check className="w-4 h-4 text-indigo-200" /> : <Plus className="w-4 h-4" />}
-                <span>{inList ? 'In Playlist' : 'Add to Playlist'}</span>
+                {inList ? <Check className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+                <span>{inList ? 'In Watchlist' : 'Add to Watchlist'}</span>
               </button>
             </div>
           </div>
@@ -266,17 +264,17 @@ function MovieDetailsContent() {
 
       {/* Trailer Modal Popup */}
       {trailerModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xl animate-fade-in">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#231215]/50 backdrop-blur-md">
           <div className="absolute inset-0" onClick={() => setTrailerModalOpen(false)} />
-          <div className="relative w-full max-w-3xl rounded-[2.5rem] bg-white/95 border-2 border-white shadow-2xl overflow-hidden z-10 p-5 backdrop-blur-3xl text-slate-900">
-            <div className="flex items-center justify-between pb-3 px-2 border-b border-slate-200/80">
-              <h3 className="text-sm font-black text-slate-900 flex items-center gap-2">
-                <Film className="w-4 h-4 text-indigo-600" />
+          <div className="relative w-full max-w-3xl rounded-3xl bg-[#FFFDFB] border border-[#E5DDD2] shadow-2xl overflow-hidden z-10 p-5 text-[#231215]">
+            <div className="flex items-center justify-between pb-3 px-2 border-b border-[#F0E8DD]">
+              <h3 className="font-serif text-sm font-bold text-[#231215] flex items-center gap-2">
+                <Film className="w-4 h-4 text-[#7A242B]" />
                 Official Trailer &bull; {movie.title}
               </h3>
               <button
                 onClick={() => setTrailerModalOpen(false)}
-                className="p-1.5 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-700 transition"
+                className="p-1.5 rounded-full hover:bg-[#F6EFE6] text-[#7A242B] transition"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -303,16 +301,16 @@ function MovieDetailsContent() {
         </div>
       )}
 
-      {/* TV Series Seasons & Episodes Explorer (When TV Series) */}
+      {/* TV Series Seasons & Episodes Explorer */}
       {isTv && (
         <section className="space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-slate-200/80">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-[#E5DDD2]">
             <div>
-              <h2 className="text-lg font-black text-slate-900 tracking-tight flex items-center gap-2">
-                <Tv className="w-5 h-5 text-indigo-600" />
-                Seasons &amp; Episodes
+              <h2 className="font-serif text-lg font-bold text-[#231215] tracking-tight flex items-center gap-2">
+                <Tv className="w-5 h-5 text-[#7A242B]" />
+                Seasons &amp; Episodic Chronicles
               </h2>
-              <p className="text-xs text-slate-500 font-medium">Select a season and episode to stream via nxsha.space.</p>
+              <p className="text-xs text-[#6E5558] font-normal">Select a season and episode to stream directly via nxsha.space.</p>
             </div>
 
             {/* Season Selector Pills */}
@@ -324,10 +322,10 @@ function MovieDetailsContent() {
                   <button
                     key={sNum}
                     onClick={() => handleSeasonChange(sNum)}
-                    className={`px-3.5 py-1 rounded-full text-xs font-bold transition shadow-sm ${
+                    className={`px-3.5 py-1 rounded-full text-xs font-medium transition shadow-xs ${
                       isActive
-                        ? 'bg-indigo-600 text-white shadow-md'
-                        : 'liquid-glass-pill text-slate-700 hover:text-slate-950 hover:bg-white'
+                        ? 'bg-[#7A242B] text-white shadow-xs'
+                        : 'bg-[#FFFDFB] hover:bg-[#FAF6F0] border border-[#E5DDD2] text-[#54383B]'
                     }`}
                   >
                     Season {sNum}
@@ -341,7 +339,7 @@ function MovieDetailsContent() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
             {loadingEpisodes ? (
               Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className="h-24 rounded-2xl liquid-glass-card animate-pulse" />
+                <div key={i} className="h-24 rounded-2xl bg-[#FAF7F2] border border-[#E5DDD2] animate-pulse" />
               ))
             ) : (
               episodesList.map((ep) => (
@@ -350,20 +348,20 @@ function MovieDetailsContent() {
                   href={`/watch/${movie.id}?type=tv&season=${selectedSeason}&episode=${ep.episodeNumber}`}
                   onClick={playGlassClick}
                   onMouseEnter={playGlassHover}
-                  className="p-3.5 rounded-2xl liquid-glass-card hover:bg-white transition group flex items-start justify-between gap-3 shadow-sm hover:shadow-md"
+                  className="p-4 rounded-2xl bg-[#FFFDFB] hover:bg-[#FAF6F0] border border-[#E5DDD2] transition group flex items-start justify-between gap-3 shadow-xs hover:shadow-md"
                 >
                   <div className="space-y-1 min-w-0">
-                    <span className="text-[10px] font-extrabold text-indigo-600 uppercase tracking-wide">
+                    <span className="text-[10px] font-bold text-[#7A242B] uppercase tracking-wide">
                       Ep {ep.episodeNumber}
                     </span>
-                    <h4 className="text-xs font-extrabold text-slate-900 group-hover:text-indigo-600 transition-colors line-clamp-1">
+                    <h4 className="font-serif text-xs font-bold text-[#231215] group-hover:text-[#7A242B] transition-colors line-clamp-1">
                       {ep.name}
                     </h4>
-                    <p className="text-[11px] text-slate-500 line-clamp-2 leading-relaxed">
+                    <p className="text-[11px] text-[#7A6165] line-clamp-2 leading-relaxed">
                       {ep.overview || `Season ${selectedSeason} Episode ${ep.episodeNumber}.`}
                     </p>
                   </div>
-                  <div className="w-8 h-8 rounded-full bg-white group-hover:bg-indigo-600 text-slate-900 group-hover:text-white flex items-center justify-center transition shadow-sm shrink-0 mt-1">
+                  <div className="w-8 h-8 rounded-full bg-[#FAF7F2] group-hover:bg-[#7A242B] text-[#54383B] group-hover:text-white flex items-center justify-center transition shadow-xs shrink-0 mt-1">
                     <Play className="w-3.5 h-3.5 fill-current ml-0.5" />
                   </div>
                 </Link>
@@ -376,25 +374,25 @@ function MovieDetailsContent() {
       {/* Cast & Crew Section */}
       {movie.cast && movie.cast.length > 0 && (
         <section className="space-y-3">
-          <h2 className="text-base font-extrabold text-slate-900 tracking-wide">Top Billed Cast</h2>
+          <h2 className="font-serif text-base font-bold text-[#231215] tracking-tight">Top Billed Cast &amp; Auteurs</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3.5">
             {movie.cast.map((actor, idx) => (
               <div
                 key={idx}
-                className="p-4 rounded-3xl bg-white/80 hover:bg-white border border-white/90 flex flex-col items-center text-center space-y-2 group shadow-xs hover:shadow-md transition"
+                className="p-4 rounded-2xl bg-[#FFFDFB] hover:bg-[#FAF6F0] border border-[#E5DDD2] flex flex-col items-center text-center space-y-2 group shadow-xs hover:shadow-md transition"
               >
-                <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-600 p-[1.5px] overflow-hidden shadow-sm">
+                <div className="w-14 h-14 rounded-full bg-[#7A242B] p-0.5 overflow-hidden shadow-xs">
                   {actor.avatarUrl ? (
                     <img src={actor.avatarUrl} alt={actor.name} className="w-full h-full object-cover rounded-full" />
                   ) : (
-                    <div className="w-full h-full bg-slate-100 rounded-full flex items-center justify-center text-indigo-600">
+                    <div className="w-full h-full bg-[#F4ECE1] rounded-full flex items-center justify-center text-[#7A242B]">
                       <User className="w-6 h-6" />
                     </div>
                   )}
                 </div>
                 <div className="w-full">
-                  <h4 className="text-xs font-bold text-slate-900 truncate">{actor.name}</h4>
-                  <p className="text-[10px] text-slate-500 font-medium truncate">{actor.role}</p>
+                  <h4 className="font-serif text-xs font-bold text-[#231215] truncate">{actor.name}</h4>
+                  <p className="text-[10px] text-[#7A6165] font-normal truncate">{actor.role}</p>
                 </div>
               </div>
             ))}
@@ -405,9 +403,7 @@ function MovieDetailsContent() {
       {/* Similar Movies Carousel / Grid */}
       {movie.similar && movie.similar.length > 0 && (
         <section className="space-y-3 pt-2">
-          <div className="flex items-center justify-between">
-            <h2 className="text-base font-extrabold text-slate-900 tracking-wide">Similar Recommendations</h2>
-          </div>
+          <h2 className="font-serif text-base font-bold text-[#231215] tracking-tight">Curatorial Similar Recommendations</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
             {movie.similar.map((item) => (
               <MovieCard key={item.id} movie={item} />
@@ -424,8 +420,8 @@ export default function MovieDetailsPage() {
     <Suspense
       fallback={
         <div className="w-full h-96 flex flex-col items-center justify-center gap-3">
-          <div className="w-8 h-8 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin" />
-          <span className="text-xs text-slate-500 font-semibold">Loading movie details...</span>
+          <div className="w-8 h-8 border-2 border-[#7A242B] border-t-transparent rounded-full animate-spin" />
+          <span className="text-xs text-[#7A6165] font-serif">Loading cinematic archive details...</span>
         </div>
       }
     >

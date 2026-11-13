@@ -80,7 +80,7 @@ export const MovieDetailsModal: React.FC<MovieDetailsModalProps> = ({
   return (
     <AnimatePresence>
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-10 select-none overflow-y-auto">
-        {/* Spatial Frosted Backdrop */}
+        {/* Soft Ambient Backdrop */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -89,27 +89,27 @@ export const MovieDetailsModal: React.FC<MovieDetailsModalProps> = ({
             playGlassClick();
             onClose();
           }}
-          className="fixed inset-0 bg-slate-900/40 backdrop-blur-2xl transition-opacity"
+          className="fixed inset-0 bg-[#231215]/50 backdrop-blur-md transition-opacity"
         />
 
         {/* Modal Window */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.94, y: 24 }}
+          initial={{ opacity: 0, scale: 0.94, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.94, y: 24 }}
+          exit={{ opacity: 0, scale: 0.94, y: 20 }}
           transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-          className="relative w-full max-w-4xl max-h-[90vh] overflow-hidden rounded-[2.5rem] bg-white/95 border-2 border-white shadow-2xl backdrop-blur-3xl z-10 flex flex-col my-auto text-slate-900"
+          className="relative w-full max-w-4xl max-h-[90vh] overflow-hidden rounded-3xl sm:rounded-[2.4rem] bg-[#FFFDFB] border border-[#E5DDD2] shadow-2xl z-10 flex flex-col my-auto text-[#231215]"
         >
           {/* Hero Backdrop Banner */}
-          <div className="relative w-full h-52 sm:h-80 shrink-0 overflow-hidden">
+          <div className="relative w-full h-56 sm:h-80 shrink-0 overflow-hidden">
             <img
               src={movie.backdropUrl || movie.posterUrl}
               alt={movie.title}
               className="w-full h-full object-cover"
             />
-            {/* Multi-stop visionOS Vignette */}
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent" />
-            <div className="absolute inset-0 bg-gradient-to-r from-slate-950/80 via-transparent to-transparent" />
+            {/* Vignette */}
+            <div className="absolute inset-0 bg-gradient-to-t from-[#231215] via-[#231215]/50 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#231215]/80 via-transparent to-transparent" />
 
             {/* Close Button */}
             <button
@@ -119,7 +119,7 @@ export const MovieDetailsModal: React.FC<MovieDetailsModalProps> = ({
               }}
               onMouseEnter={playGlassHover}
               aria-label="Close details"
-              className="absolute top-3.5 right-3.5 sm:top-5 sm:right-5 p-2 sm:p-2.5 rounded-full bg-white/90 hover:bg-white text-slate-800 border border-white backdrop-blur-xl transition hover:scale-105 active:scale-95 shadow-md z-20"
+              className="absolute top-4 right-4 sm:top-5 sm:right-5 p-2.5 rounded-full bg-[#FFFDFB]/90 hover:bg-[#FFFDFB] text-[#231215] border border-[#E5DDD2] backdrop-blur-md transition hover:scale-105 active:scale-95 shadow-md z-20"
             >
               <X className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
@@ -132,139 +132,98 @@ export const MovieDetailsModal: React.FC<MovieDetailsModalProps> = ({
                   {movie.genres?.map((genre) => (
                     <span
                       key={genre}
-                      className="px-2.5 sm:px-3 py-0.5 rounded-full bg-white/20 text-white text-[10px] sm:text-xs font-bold backdrop-blur-md border border-white/25 shadow-sm"
+                      className="px-3 py-0.5 rounded-full bg-white/20 text-white text-[10px] sm:text-xs font-semibold backdrop-blur-md border border-white/25 shadow-xs"
                     >
                       {genre}
                     </span>
                   ))}
                   {movie.rating ? (
-                    <span className="flex items-center gap-1 px-2 sm:px-2.5 py-0.5 rounded-full bg-white/90 text-slate-900 text-[10px] sm:text-xs font-black border border-white backdrop-blur-md tabular-nums shadow-md">
-                      <Star className="w-3 sm:w-3.5 h-3 sm:h-3.5 fill-amber-400 text-amber-500" />
-                      IMDb {movie.rating.toFixed(1)}
+                    <span className="flex items-center gap-1 px-3 py-0.5 rounded-full bg-[#FAF5EE]/95 border border-[#E8DFD4] text-[#231215] text-[10px] sm:text-xs font-bold tabular-nums">
+                      <Star className="w-3.5 h-3.5 fill-[#C27803] text-[#C27803]" />
+                      {movie.rating.toFixed(1)}
                     </span>
                   ) : null}
                 </div>
 
-                <h2 className="text-xl sm:text-4xl font-black text-white tracking-tight drop-shadow-md">
+                <h2 className="font-serif text-2xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight leading-tight">
                   {movie.title}
                 </h2>
               </div>
             </div>
           </div>
 
-          {/* Body Content */}
-          <div className="p-4 sm:p-8 space-y-5 sm:space-y-6 overflow-y-auto custom-scrollbar flex-1 bg-white/50">
-            {/* Metadata Bar */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-3 sm:py-3.5 px-4 sm:px-5 rounded-2xl bg-slate-100/90 border border-slate-200/90 text-xs text-slate-700 shadow-inner">
-              <div className="flex items-center gap-3 sm:gap-5 flex-wrap">
-                {movie.releaseYear && (
-                  <span className="flex items-center gap-1.5 font-bold">
-                    <Calendar className="w-3.5 h-3.5 text-indigo-600" />
-                    <span>{movie.releaseDate || movie.releaseYear}</span>
-                  </span>
-                )}
-                {movie.runtime && (
-                  <span className="flex items-center gap-1.5 font-bold tabular-nums">
-                    <Clock className="w-3.5 h-3.5 text-indigo-600" />
-                    <span>{movie.runtime}</span>
-                  </span>
-                )}
-                {movie.type && (
-                  <span className="flex items-center gap-1.5 uppercase font-black tracking-wider text-[11px] text-indigo-600">
-                    <Film className="w-3.5 h-3.5" />
-                    <span>{movie.type}</span>
-                  </span>
-                )}
-                {movie.director && (
-                  <span className="flex items-center gap-1.5 font-medium text-slate-600">
-                    <span className="text-slate-400 font-normal">Directed by</span>
-                    <strong className="text-slate-900 font-bold">{movie.director}</strong>
-                  </span>
-                )}
-              </div>
+          {/* Modal Body: Details & Actions */}
+          <div className="p-6 sm:p-8 space-y-6 overflow-y-auto">
+            {/* Action Buttons: Watch Now, Watchlist, Share */}
+            <div className="flex items-center gap-3 flex-wrap">
+              <button
+                onClick={handleWatchNow}
+                onMouseEnter={playGlassHover}
+                className="flex items-center gap-2 px-7 sm:px-9 py-3 rounded-full btn-terracotta text-white font-medium text-xs sm:text-sm tracking-wide shadow-md"
+              >
+                <Play className="w-4 h-4 fill-white" />
+                <span>Screen Feature Film</span>
+              </button>
 
-              {/* Action Buttons */}
-              <div className="flex items-center gap-2 flex-wrap sm:flex-nowrap">
-                <button
-                  onClick={handleShare}
-                  onMouseEnter={playGlassHover}
-                  className="px-3 py-2 rounded-xl bg-white hover:bg-slate-50 text-slate-700 hover:text-slate-950 border border-slate-200 transition flex items-center gap-1.5 text-xs font-bold shadow-xs flex-1 sm:flex-initial justify-center"
-                  title="Share movie"
-                >
-                  <Share2 className="w-3.5 h-3.5 text-indigo-600" />
-                  <span>{copied ? 'Copied!' : 'Share'}</span>
-                </button>
+              <button
+                onClick={handleToggleWatchlist}
+                onMouseEnter={playGlassHover}
+                className={`flex items-center gap-2 px-5 sm:px-6 py-3 rounded-full border text-xs sm:text-sm font-medium transition ${
+                  inWatchlist
+                    ? 'bg-[#F4ECE1] border-[#7A242B] text-[#7A242B]'
+                    : 'bg-[#FAF7F2] hover:bg-[#F4ECE1] border-[#D4C8BB] text-[#3D2528]'
+                }`}
+              >
+                {inWatchlist ? (
+                  <>
+                    <Check className="w-4 h-4" />
+                    <span>In Watchlist</span>
+                  </>
+                ) : (
+                  <>
+                    <Plus className="w-4 h-4" />
+                    <span>Add to Watchlist</span>
+                  </>
+                )}
+              </button>
 
-                <button
-                  onClick={handleToggleWatchlist}
-                  onMouseEnter={playGlassHover}
-                  className={`px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition border shadow-xs flex-1 sm:flex-initial justify-center ${
-                    inWatchlist
-                      ? 'bg-indigo-600 border-indigo-500 text-white shadow-sm'
-                      : 'bg-white hover:bg-slate-50 border-slate-200 text-slate-800'
-                  }`}
-                >
-                  {inWatchlist ? (
-                    <>
-                      <Check className="w-3.5 h-3.5" />
-                      <span>In List</span>
-                    </>
-                  ) : (
-                    <>
-                      <Plus className="w-3.5 h-3.5" />
-                      <span>Watchlist</span>
-                    </>
-                  )}
-                </button>
-
-                <button
-                  onClick={handleWatchNow}
-                  onMouseEnter={playGlassHover}
-                  className="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-md shadow-indigo-600/25 hover:scale-105 active:scale-95 transition flex-1 sm:flex-initial justify-center"
-                >
-                  <Play className="w-3.5 h-3.5 fill-white" />
-                  <span>Watch Now</span>
-                </button>
-              </div>
+              <button
+                onClick={handleShare}
+                onMouseEnter={playGlassHover}
+                className="p-3 rounded-full bg-[#FAF7F2] hover:bg-[#F4ECE1] border border-[#D4C8BB] text-[#54383B] transition shadow-xs"
+                title="Share link"
+              >
+                <Share2 className="w-4 h-4" />
+              </button>
+              {copied && <span className="text-xs text-[#7A242B] font-semibold">Link Copied!</span>}
             </div>
 
             {/* Synopsis */}
             <div className="space-y-2">
-              <h3 className="text-xs uppercase font-black tracking-wider text-indigo-600">
-                Synopsis
+              <h3 className="font-serif text-sm font-bold uppercase tracking-wider text-[#7A242B]">
+                Curatorial Overview &amp; Synopsis
               </h3>
-              <p className="text-sm text-slate-700 leading-relaxed font-normal">
-                {movie.overview || 'No synopsis available for this title.'}
+              <p className="text-sm sm:text-base text-[#4F3639] leading-relaxed font-normal">
+                {movie.overview}
               </p>
             </div>
 
-            {/* Cast Members */}
+            {/* Cast & Credits */}
             {movie.cast && movie.cast.length > 0 && (
-              <div className="space-y-3">
-                <h3 className="text-xs uppercase font-black tracking-wider text-indigo-600">
-                  Featured Cast
+              <div className="space-y-3 pt-2">
+                <h3 className="font-serif text-sm font-bold uppercase tracking-wider text-[#7A242B]">
+                  Featured Cast &amp; Auteurs
                 </h3>
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-                  {movie.cast.slice(0, 8).map((actor, idx) => (
+                <div className="flex items-center gap-3 overflow-x-auto no-scrollbar pb-2">
+                  {movie.cast.map((actor, idx) => (
                     <div
                       key={idx}
-                      className="p-3 rounded-2xl bg-slate-50 hover:bg-slate-100/90 border border-slate-200/90 flex items-center gap-3 transition shadow-xs"
+                      className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#FAF7F2] border border-[#E5DDD2] shrink-0"
                     >
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-600 to-purple-600 flex items-center justify-center text-white font-bold text-xs shrink-0 shadow-sm">
-                        {actor.avatarUrl ? (
-                          <img
-                            src={actor.avatarUrl}
-                            alt={actor.name}
-                            className="w-full h-full object-cover rounded-full"
-                          />
-                        ) : (
-                          actor.name.charAt(0)
-                        )}
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <p className="text-xs font-bold text-slate-900 truncate">{actor.name}</p>
-                        <p className="text-[11px] text-slate-500 font-medium truncate">{actor.role || 'Actor'}</p>
-                      </div>
+                      <User className="w-3.5 h-3.5 text-[#7A242B]" />
+                      <span className="text-xs font-medium text-[#231215]">
+                        {typeof actor === 'string' ? actor : (actor as any).name}
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -276,4 +235,3 @@ export const MovieDetailsModal: React.FC<MovieDetailsModalProps> = ({
     </AnimatePresence>
   );
 };
-

@@ -14,6 +14,7 @@ import {
   Heart,
   Skull,
   Shield,
+  Quote,
 } from 'lucide-react';
 import { HeroSection } from '@/components/HeroSection';
 import { UpcomingSection } from '@/components/UpcomingSection';
@@ -28,14 +29,14 @@ import { INITIAL_MOVIES } from '@/lib/mockData';
 import { playGlassClick, playGlassHover } from '@/lib/sound';
 
 const QUICK_GENRES = [
-  { name: 'Action', icon: Zap, color: 'from-amber-500/20 to-orange-500/10', border: 'border-amber-400/30' },
-  { name: 'Sci-Fi', icon: Sparkles, color: 'from-sky-500/20 to-cyan-500/10', border: 'border-sky-400/30' },
-  { name: 'Adventure', icon: Compass, color: 'from-emerald-500/20 to-teal-500/10', border: 'border-emerald-400/30' },
-  { name: 'Animation', icon: Film, color: 'from-purple-500/20 to-pink-500/10', border: 'border-purple-400/30' },
-  { name: 'Thriller', icon: Flame, color: 'from-indigo-500/20 to-purple-500/10', border: 'border-indigo-400/30' },
-  { name: 'Horror', icon: Skull, color: 'from-rose-500/20 to-red-500/10', border: 'border-rose-400/30' },
-  { name: 'Crime', icon: Shield, color: 'from-slate-500/20 to-zinc-500/10', border: 'border-slate-400/30' },
-  { name: 'Romance', icon: Heart, color: 'from-pink-500/20 to-rose-500/10', border: 'border-pink-400/30' },
+  { name: 'Action', icon: Zap },
+  { name: 'Sci-Fi', icon: Sparkles },
+  { name: 'Adventure', icon: Compass },
+  { name: 'Animation', icon: Film },
+  { name: 'Thriller', icon: Flame },
+  { name: 'Horror', icon: Skull },
+  { name: 'Crime', icon: Shield },
+  { name: 'Romance', icon: Heart },
 ];
 
 export default function HomePage() {
@@ -122,7 +123,7 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div className="w-full space-y-9 pb-12 select-none">
+    <div className="w-full space-y-10 pb-12 select-none">
       {/* ========================================================
           1. Top Bento Grid: Hero Stage (8 cols) + Upcoming Trailers (4 cols)
       ======================================================== */}
@@ -147,25 +148,50 @@ export default function HomePage() {
       </section>
 
       {/* ========================================================
-          2. Universal YouTube & Local Video Player Strip
+          2. Words of Wisdom / Cinéaste Dialogue (Inspired by Reference)
+      ======================================================== */}
+      <section className="w-full rounded-3xl sm:rounded-[2.4rem] p-8 sm:p-12 lg:p-14 bg-gradient-to-br from-[#FFFDFB] via-[#FAF5EE] to-[#F5ECE0] border border-[#E5DDD2] shadow-sm text-center relative overflow-hidden select-none">
+        <div className="max-w-3xl mx-auto space-y-4">
+          <div className="flex items-center justify-center gap-3">
+            <div className="w-10 h-px bg-[#7A242B]/30" />
+            <span className="font-serif italic text-xs tracking-[0.25em] uppercase text-[#7A242B] font-semibold">
+              Words of Wisdom • Curatorial Creed
+            </span>
+            <div className="w-10 h-px bg-[#7A242B]/30" />
+          </div>
+
+          <blockquote className="font-serif text-xl sm:text-3xl lg:text-[2.2rem] text-[#231215] font-normal leading-relaxed italic">
+            “Cinema is a matter of what’s in the frame and what’s out. It is the sacred mirror through which we discover the quietest depths of human emotion.”
+          </blockquote>
+
+          <div className="pt-2 flex items-center justify-center gap-2 text-xs font-sans text-[#786164]">
+            <span className="font-semibold text-[#541B21]">Martin Scorsese &amp; Federico Fellini</span>
+            <span>•</span>
+            <span>Cinéverse Curatorial Archives</span>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================
+          3. Universal YouTube & Local Video Screening Salon
       ======================================================== */}
       <section className="w-full">
         <UniversalPlayerBanner />
       </section>
 
       {/* ========================================================
-          3. Continue Watching Rail (Prominent)
+          4. Continue Your Screenings Rail
       ======================================================== */}
       <section className="w-full">
         <ContinueWatchingSection />
       </section>
 
       {/* ========================================================
-          4. Top 10 Trending Movies Shelf (With Rank Numbers)
+          5. Top 10 Curated Masterpieces & Trending Feature Films
       ======================================================== */}
       <section className="w-full">
         <MovieShelf
-          title="Top 10 Trending Cinema"
+          title="Curated Masterpieces &amp; Trending Features"
           icon={Flame}
           seeAllHref="/movies?category=trending"
           movies={trendingMovies.length > 0 ? trendingMovies : INITIAL_MOVIES}
@@ -176,11 +202,11 @@ export default function HomePage() {
       </section>
 
       {/* ========================================================
-          5. Popular TV Series & Episodic Shows
+          6. Episodic Chronicles & TV Series
       ======================================================== */}
       <section className="w-full">
         <MovieShelf
-          title="Popular TV Shows &amp; Series"
+          title="Episodic Chronicles &amp; Television Series"
           icon={Tv}
           seeAllHref="/tv"
           movies={tvShows.length > 0 ? tvShows : INITIAL_MOVIES.filter((m) => m.type === 'tv')}
@@ -190,11 +216,11 @@ export default function HomePage() {
       </section>
 
       {/* ========================================================
-          6. Trending Anime Showcase
+          7. The Boutique Anime Vault
       ======================================================== */}
       <section className="w-full">
         <MovieShelf
-          title="Trending Anime Universe"
+          title="The Boutique Anime Vault"
           icon={Sparkles}
           seeAllHref="/anime"
           movies={animeList.length > 0 ? animeList : INITIAL_MOVIES}
@@ -204,11 +230,11 @@ export default function HomePage() {
       </section>
 
       {/* ========================================================
-          7. Top Rated Masterpieces & IMDb Top Picks
+          8. Criterion Selections & Award Winners
       ======================================================== */}
       <section className="w-full">
         <MovieShelf
-          title="Top Rated Masterpieces"
+          title="Criterion Selections &amp; Award Winners"
           icon={Award}
           seeAllHref="/movies?category=top_rated"
           movies={topRated.length > 0 ? topRated : INITIAL_MOVIES}
@@ -218,21 +244,21 @@ export default function HomePage() {
       </section>
 
       {/* ========================================================
-          8. Explore by Cinematic Genre
+          9. Curated by Cinematic Genre
       ======================================================== */}
-      <section className="w-full space-y-3">
+      <section className="w-full space-y-4">
         <div className="flex items-center justify-between px-1">
           <div className="flex items-center gap-2">
-            <Compass className="w-4 h-4 text-indigo-600" />
-            <h2 className="text-sm sm:text-base font-extrabold text-slate-900 tracking-wide">
-              Explore by Cinematic Genre
+            <Compass className="w-4 h-4 text-[#7A242B]" />
+            <h2 className="font-serif text-lg sm:text-xl font-bold text-[#231215] tracking-tight">
+              Curated by Cinematic Genre
             </h2>
           </div>
           <Link
             href="/genres"
-            className="text-xs px-3.5 py-1.5 rounded-full liquid-glass-pill font-bold text-slate-700 hover:text-slate-950 transition border border-white/80 bg-white/70 shadow-xs"
+            className="text-xs px-3.5 py-1.5 rounded-full bg-[#FFFDFB] hover:bg-[#FAF6F0] font-semibold text-[#54383B] hover:text-[#231215] transition border border-[#E5DDD2] shadow-xs"
           >
-            All Genres
+            All Classifications
           </Link>
         </div>
 
@@ -243,12 +269,12 @@ export default function HomePage() {
               <Link
                 key={genre.name}
                 href={`/explore?genre=${encodeURIComponent(genre.name)}`}
-                className={`p-3.5 rounded-2xl border ${genre.border} bg-white/85 hover:bg-white flex flex-col items-center text-center gap-2 hover:scale-105 active:scale-95 transition-all duration-300 shadow-xs hover:shadow-md backdrop-blur-xl group`}
+                className="p-4 rounded-2xl border border-[#E5DDD2] bg-[#FFFDFB] hover:bg-[#FAF6F0] flex flex-col items-center text-center gap-2.5 hover:scale-105 active:scale-95 transition-all duration-300 shadow-xs hover:shadow-md group"
               >
-                <div className="p-2 rounded-xl bg-indigo-50 text-indigo-600 group-hover:scale-110 transition-transform">
-                  <Icon className="w-4 h-4 text-indigo-600" />
+                <div className="p-2 rounded-xl bg-[#F6ECE6] text-[#7A242B] group-hover:scale-110 transition-transform">
+                  <Icon className="w-4 h-4 text-[#7A242B]" />
                 </div>
-                <span className="text-xs font-bold text-slate-800 group-hover:text-indigo-600 transition-colors">
+                <span className="font-serif text-xs font-bold text-[#231215] group-hover:text-[#7A242B] transition-colors">
                   {genre.name}
                 </span>
               </Link>
@@ -258,18 +284,18 @@ export default function HomePage() {
       </section>
 
       {/* ========================================================
-          9. Recommended For You Carousel
+          10. Personalized Curatorial Recommendations
       ======================================================== */}
       <section className="w-full pt-1">
         <RecommendedCarousel
-          title="Recommended For You"
+          title="Personalized Curatorial Recommendations"
           seeAllHref="/movies"
           movies={recommendedMovies.length > 0 ? recommendedMovies : INITIAL_MOVIES}
           onOpenDetails={(movie) => setSelectedMovie(movie)}
         />
       </section>
 
-      {/* Interactive visionOS Movie Details Modal */}
+      {/* Interactive Movie Details Modal */}
       <MovieDetailsModal
         movie={selectedMovie}
         isOpen={selectedMovie !== null}

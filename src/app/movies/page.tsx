@@ -37,12 +37,12 @@ function MoviesContent() {
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
   const categories = [
-    { id: 'all', label: 'All Movies' },
-    { id: 'popular', label: 'Popular' },
-    { id: 'trending', label: 'Trending' },
-    { id: 'top_rated', label: 'Top Rated' },
-    { id: 'upcoming', label: 'Upcoming' },
-    { id: 'now_playing', label: 'Now Playing' },
+    { id: 'all', label: 'All Masterworks' },
+    { id: 'popular', label: 'Most Celebrated' },
+    { id: 'trending', label: 'Festival Trending' },
+    { id: 'top_rated', label: 'Criterion & Top Rated' },
+    { id: 'upcoming', label: 'Upcoming Premieres' },
+    { id: 'now_playing', label: 'Now in Theatres' },
   ];
 
   useEffect(() => {
@@ -77,7 +77,6 @@ function MoviesContent() {
     fetchList();
   }, [activeCategory, selectedGenre, selectedYear, minRating, selectedSort, currentPage]);
 
-  // Live dynamic search when typing in filter box
   useEffect(() => {
     if (!searchFilter.trim()) {
       return;
@@ -109,35 +108,35 @@ function MoviesContent() {
   return (
     <div className="w-full space-y-6 pb-12 select-none">
       {/* Header & Title */}
-      <div className="p-6 sm:p-8 rounded-[2.5rem] liquid-glass-panel border-2 border-white shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-5 bg-white/90 backdrop-blur-3xl text-slate-900">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center text-white shadow-md">
+      <div className="p-6 sm:p-9 rounded-3xl sm:rounded-[2.4rem] bg-[#FFFDFB] border border-[#E5DDD2] shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-5 text-[#231215]">
+        <div className="space-y-1.5">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-[#7A242B] flex items-center justify-center text-white shadow-xs">
               <Film className="w-5 h-5 text-white" />
             </div>
-            <h1 className="text-xl sm:text-3xl font-black text-slate-900 tracking-tight">
-              Feature Films &amp; Movies
+            <h1 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#231215] tracking-tight">
+              Curated Feature Films
             </h1>
           </div>
-          <p className="text-xs sm:text-sm text-slate-600 font-normal">
-            Browse the comprehensive universal movie catalog powered by TMDb streaming architecture.
+          <p className="text-xs sm:text-sm text-[#6E5558] font-normal">
+            Browse the comprehensive universal cinema archive powered by direct cinema streaming.
           </p>
         </div>
 
         {/* Live Filter Search Input */}
-        <div className="w-full sm:w-72 relative flex items-center">
-          <Search className="w-4 h-4 text-indigo-600 absolute left-3.5 pointer-events-none" />
+        <div className="w-full sm:w-80 relative flex items-center">
+          <Search className="w-4 h-4 text-[#7A242B] absolute left-3.5 pointer-events-none" />
           <input
             type="text"
             value={searchFilter}
             onChange={(e) => setSearchFilter(e.target.value)}
-            placeholder="Search movie title..."
-            className="w-full pl-10 pr-9 py-2.5 rounded-2xl bg-slate-50 hover:bg-slate-100 focus:bg-white border border-slate-200 text-slate-900 placeholder:text-slate-400 text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 transition shadow-inner"
+            placeholder="Search movie title or director..."
+            className="w-full pl-10 pr-9 py-2.5 rounded-full bg-[#FAF7F2] hover:bg-[#FAF6F0] focus:bg-[#FFFDFB] border border-[#E5DDD2] focus:border-[#7A242B] text-[#231215] placeholder:text-[#9E8B8E] text-xs sm:text-sm focus:outline-none transition shadow-xs"
           />
           {searchFilter && (
             <button
               onClick={() => setSearchFilter('')}
-              className="absolute right-3 p-1 rounded-full text-slate-400 hover:text-slate-700"
+              className="absolute right-3 p-1 rounded-full text-[#7A242B]"
             >
               <X className="w-3.5 h-3.5" />
             </button>
@@ -158,10 +157,10 @@ function MoviesContent() {
                 setCurrentPage(1);
               }}
               onMouseEnter={playGlassHover}
-              className={`px-4 py-2 rounded-2xl text-xs font-bold transition whitespace-nowrap shadow-xs border ${
+              className={`px-4 py-2 rounded-full text-xs font-medium transition whitespace-nowrap border ${
                 isActive
-                  ? 'bg-indigo-600 border-indigo-500 text-white shadow-md shadow-indigo-600/25'
-                  : 'bg-white/80 hover:bg-white border-white/90 text-slate-700 hover:text-slate-950'
+                  ? 'bg-[#7A242B] border-[#7A242B] text-white shadow-xs'
+                  : 'bg-[#FFFDFB] hover:bg-[#FAF6F0] border-[#E5DDD2] text-[#54383B]'
               }`}
             >
               {cat.label}
@@ -171,11 +170,11 @@ function MoviesContent() {
       </div>
 
       {/* Filter Toolbar */}
-      <div className="p-4 rounded-3xl liquid-glass-panel border-2 border-white flex flex-wrap items-center justify-between gap-4 text-xs bg-white/85 backdrop-blur-2xl text-slate-800 shadow-md">
+      <div className="p-4 rounded-2xl bg-[#FFFDFB] border border-[#E5DDD2] flex flex-wrap items-center justify-between gap-4 text-xs text-[#231215] shadow-xs">
         {/* Genre Selector */}
         <div className="flex items-center gap-1.5">
-          <span className="text-slate-600 flex items-center gap-1 font-bold">
-            <Layers className="w-3.5 h-3.5 text-indigo-600" />
+          <span className="text-[#6E5558] flex items-center gap-1 font-medium">
+            <Layers className="w-3.5 h-3.5 text-[#7A242B]" />
             Genre:
           </span>
           <select
@@ -184,10 +183,10 @@ function MoviesContent() {
               setSelectedGenre(e.target.value);
               setCurrentPage(1);
             }}
-            className="bg-slate-50 border border-slate-200 text-slate-800 font-bold rounded-xl px-2.5 py-1 text-xs outline-none cursor-pointer shadow-xs"
+            className="bg-[#FAF7F2] border border-[#E5DDD2] text-[#231215] font-medium rounded-xl px-2.5 py-1 text-xs outline-none cursor-pointer"
           >
             {GENRES_LIST.map((g) => (
-              <option key={g} value={g} className="bg-white text-slate-900">
+              <option key={g} value={g} className="bg-white text-[#231215]">
                 {g}
               </option>
             ))}
@@ -196,8 +195,8 @@ function MoviesContent() {
 
         {/* Year Selector */}
         <div className="flex items-center gap-1.5">
-          <span className="text-slate-600 flex items-center gap-1 font-bold">
-            <Calendar className="w-3.5 h-3.5 text-indigo-600" />
+          <span className="text-[#6E5558] flex items-center gap-1 font-medium">
+            <Calendar className="w-3.5 h-3.5 text-[#7A242B]" />
             Year:
           </span>
           <select
@@ -206,11 +205,11 @@ function MoviesContent() {
               setSelectedYear(e.target.value);
               setCurrentPage(1);
             }}
-            className="bg-slate-50 border border-slate-200 text-slate-800 font-bold rounded-xl px-2.5 py-1 text-xs outline-none cursor-pointer shadow-xs"
+            className="bg-[#FAF7F2] border border-[#E5DDD2] text-[#231215] font-medium rounded-xl px-2.5 py-1 text-xs outline-none cursor-pointer"
           >
-            <option value="All">All Years</option>
+            <option value="All">All Eras</option>
             {[2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014].map((y) => (
-              <option key={y} value={y.toString()} className="bg-white text-slate-900">
+              <option key={y} value={y.toString()} className="bg-white text-[#231215]">
                 {y}
               </option>
             ))}
@@ -219,14 +218,14 @@ function MoviesContent() {
 
         {/* Rating Filter */}
         <div className="flex items-center gap-1.5">
-          <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-400" />
+          <Star className="w-3.5 h-3.5 text-[#C27803] fill-[#C27803]" />
           <select
             value={minRating}
             onChange={(e) => {
               setMinRating(parseFloat(e.target.value));
               setCurrentPage(1);
             }}
-            className="bg-slate-50 border border-slate-200 text-slate-800 font-bold rounded-xl px-2.5 py-1 text-xs outline-none cursor-pointer shadow-xs"
+            className="bg-[#FAF7F2] border border-[#E5DDD2] text-[#231215] font-medium rounded-xl px-2.5 py-1 text-xs outline-none cursor-pointer"
           >
             <option value="0">Any Rating</option>
             <option value="8">8.0+ Stars</option>
@@ -237,19 +236,19 @@ function MoviesContent() {
 
         {/* Sorting */}
         <div className="flex items-center gap-1.5 ml-auto">
-          <SlidersHorizontal className="w-3.5 h-3.5 text-indigo-600" />
+          <SlidersHorizontal className="w-3.5 h-3.5 text-[#7A242B]" />
           <select
             value={selectedSort}
             onChange={(e) => {
               setSelectedSort(e.target.value);
               setCurrentPage(1);
             }}
-            className="bg-slate-50 border border-slate-200 text-slate-800 font-bold rounded-xl px-2.5 py-1 text-xs outline-none cursor-pointer shadow-xs"
+            className="bg-[#FAF7F2] border border-[#E5DDD2] text-[#231215] font-medium rounded-xl px-2.5 py-1 text-xs outline-none cursor-pointer"
           >
-            <option value="popularity">Most Popular</option>
+            <option value="popularity">Most Celebrated</option>
             <option value="rating">Highest Rated</option>
-            <option value="year">Newest First</option>
-            <option value="title">Alphabetical</option>
+            <option value="year">Newest Premieres</option>
+            <option value="title">Alphabetical (A-Z)</option>
           </select>
         </div>
       </div>
@@ -260,13 +259,13 @@ function MoviesContent() {
           {Array.from({ length: 10 }).map((_, i) => (
             <div
               key={i}
-              className="aspect-[2/3] rounded-[2rem] bg-slate-100 border border-slate-200 animate-pulse"
+              className="aspect-[2/3] rounded-2xl bg-[#FAF7F2] border border-[#E5DDD2] animate-pulse"
             />
           ))}
         </div>
       ) : movies.length === 0 ? (
-        <div className="py-24 text-center text-slate-500 text-xs font-bold">
-          No movies match the selected filters.
+        <div className="py-24 text-center text-[#786164] font-serif text-sm">
+          No feature films match the selected curatorial filters.
         </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-5">
@@ -286,27 +285,27 @@ function MoviesContent() {
           <button
             onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
             disabled={currentPage <= 1}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold transition shadow-xs border ${
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-medium transition shadow-xs border ${
               currentPage <= 1
-                ? 'opacity-40 cursor-not-allowed bg-slate-50 border-slate-200 text-slate-400'
-                : 'liquid-glass-pill text-slate-700 hover:text-slate-950 hover:bg-white'
+                ? 'opacity-40 cursor-not-allowed bg-[#FAF7F2] border-[#E5DDD2] text-[#9E8B8E]'
+                : 'bg-[#FFFDFB] hover:bg-[#FAF6F0] border-[#E5DDD2] text-[#231215]'
             }`}
           >
             <ChevronLeft className="w-3.5 h-3.5" />
             <span>Previous</span>
           </button>
 
-          <span className="px-4 py-2 rounded-full bg-white/90 border border-white text-xs font-bold text-slate-800 tabular-nums shadow-xs">
-            Page {currentPage} {totalPages > 1 ? `of ${totalPages}` : ''}
+          <span className="px-4 py-2 rounded-full bg-[#FFFDFB] border border-[#E5DDD2] text-xs font-semibold text-[#231215] tabular-nums shadow-xs">
+            Archive Folio {currentPage} {totalPages > 1 ? `of ${totalPages}` : ''}
           </span>
 
           <button
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage >= totalPages}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold transition shadow-xs border ${
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-medium transition shadow-xs border ${
               currentPage >= totalPages
-                ? 'opacity-40 cursor-not-allowed bg-slate-50 border-slate-200 text-slate-400'
-                : 'liquid-glass-pill text-slate-700 hover:text-slate-950 hover:bg-white'
+                ? 'opacity-40 cursor-not-allowed bg-[#FAF7F2] border-[#E5DDD2] text-[#9E8B8E]'
+                : 'bg-[#FFFDFB] hover:bg-[#FAF6F0] border-[#E5DDD2] text-[#231215]'
             }`}
           >
             <span>Next</span>
@@ -329,8 +328,8 @@ export default function MoviesPage() {
   return (
     <Suspense
       fallback={
-        <div className="py-24 text-center text-white/50 text-xs font-semibold">
-          Loading universal movie catalog...
+        <div className="py-24 text-center text-[#786164] font-serif text-sm">
+          Loading curated film archive...
         </div>
       }
     >

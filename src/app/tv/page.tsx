@@ -18,9 +18,9 @@ export default function TVSeriesPage() {
   const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
 
   const categories = [
-    { id: 'popular', label: 'Popular Shows', icon: Sparkles },
-    { id: 'trending', label: 'Trending This Week', icon: Flame },
-    { id: 'top_rated', label: 'Top Rated Shows', icon: Award },
+    { id: 'popular', label: 'Celebrated Chronicles', icon: Sparkles },
+    { id: 'trending', label: 'Trending This Season', icon: Flame },
+    { id: 'top_rated', label: 'Masterpiece Series', icon: Award },
   ];
 
   useEffect(() => {
@@ -54,18 +54,18 @@ export default function TVSeriesPage() {
   return (
     <div className="w-full space-y-6 pb-12 select-none">
       {/* Header Banner */}
-      <div className="p-6 sm:p-8 rounded-[2.5rem] liquid-glass-panel border-2 border-white shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-5 bg-white/90 backdrop-blur-3xl text-slate-900">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-sky-500 to-indigo-600 flex items-center justify-center text-white shadow-md">
+      <div className="p-6 sm:p-9 rounded-3xl sm:rounded-[2.4rem] bg-[#FFFDFB] border border-[#E5DDD2] shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-5 text-[#231215]">
+        <div className="space-y-1.5">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-[#7A242B] flex items-center justify-center text-white shadow-xs">
               <Tv className="w-5 h-5 text-white" />
             </div>
-            <h1 className="text-xl sm:text-3xl font-black text-slate-900 tracking-tight">
-              TV Series &amp; Shows
+            <h1 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#231215] tracking-tight">
+              Episodic Television &amp; Series
             </h1>
           </div>
-          <p className="text-xs sm:text-sm text-slate-600 font-normal">
-            Binge-worthy drama, action series, and season releases with multi-server playback.
+          <p className="text-xs sm:text-sm text-[#6E5558] font-normal">
+            Compelling dramas, prestige miniseries, and seasonal narratives with direct nxsha.space episode streaming.
           </p>
         </div>
 
@@ -83,10 +83,10 @@ export default function TVSeriesPage() {
                   setCurrentPage(1);
                 }}
                 onMouseEnter={playGlassHover}
-                className={`flex items-center gap-1.5 px-4 py-2 rounded-2xl text-xs font-bold transition-all border whitespace-nowrap shadow-xs ${
+                className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-medium transition-all border whitespace-nowrap shadow-xs ${
                   isActive
-                    ? 'bg-indigo-600 border-indigo-500 text-white shadow-md shadow-indigo-600/25'
-                    : 'bg-white/80 hover:bg-white border-white/90 text-slate-700 hover:text-slate-950'
+                    ? 'bg-[#7A242B] border-[#7A242B] text-white shadow-xs'
+                    : 'bg-[#FFFDFB] hover:bg-[#FAF6F0] border-[#E5DDD2] text-[#54383B]'
                 }`}
               >
                 <Icon className="w-3.5 h-3.5" />
@@ -103,16 +103,20 @@ export default function TVSeriesPage() {
           {Array.from({ length: 10 }).map((_, i) => (
             <div
               key={i}
-              className="aspect-[2/3] rounded-[2rem] bg-slate-100 border border-slate-200 animate-pulse"
+              className="aspect-[2/3] rounded-2xl bg-[#FAF7F2] border border-[#E5DDD2] animate-pulse"
             />
           ))}
         </div>
+      ) : series.length === 0 ? (
+        <div className="py-24 text-center text-[#786164] font-serif text-sm">
+          No television chronicles available in this category.
+        </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-5">
-          {series.map((item) => (
+          {series.map((show) => (
             <MovieCard
-              key={item.id}
-              movie={item}
+              key={show.id}
+              movie={show}
               onOpenDetails={(m) => setSelectedMovie(m)}
             />
           ))}
@@ -125,27 +129,27 @@ export default function TVSeriesPage() {
           <button
             onClick={() => handlePageChange(Math.max(1, currentPage - 1))}
             disabled={currentPage <= 1}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold transition shadow-xs border ${
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-medium transition shadow-xs border ${
               currentPage <= 1
-                ? 'opacity-40 cursor-not-allowed bg-slate-50 border-slate-200 text-slate-400'
-                : 'liquid-glass-pill text-slate-700 hover:text-slate-950 hover:bg-white'
+                ? 'opacity-40 cursor-not-allowed bg-[#FAF7F2] border-[#E5DDD2] text-[#9E8B8E]'
+                : 'bg-[#FFFDFB] hover:bg-[#FAF6F0] border-[#E5DDD2] text-[#231215]'
             }`}
           >
             <ChevronLeft className="w-3.5 h-3.5" />
             <span>Previous</span>
           </button>
 
-          <span className="px-4 py-2 rounded-full bg-white/90 border border-white text-xs font-bold text-slate-800 tabular-nums shadow-xs">
-            Page {currentPage} {totalPages > 1 ? `of ${totalPages}` : ''}
+          <span className="px-4 py-2 rounded-full bg-[#FFFDFB] border border-[#E5DDD2] text-xs font-semibold text-[#231215] tabular-nums shadow-xs">
+            Volume {currentPage} {totalPages > 1 ? `of ${totalPages}` : ''}
           </span>
 
           <button
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage >= totalPages}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-bold transition shadow-xs border ${
+            className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-xs font-medium transition shadow-xs border ${
               currentPage >= totalPages
-                ? 'opacity-40 cursor-not-allowed bg-slate-50 border-slate-200 text-slate-400'
-                : 'liquid-glass-pill text-slate-700 hover:text-slate-950 hover:bg-white'
+                ? 'opacity-40 cursor-not-allowed bg-[#FAF7F2] border-[#E5DDD2] text-[#9E8B8E]'
+                : 'bg-[#FFFDFB] hover:bg-[#FAF6F0] border-[#E5DDD2] text-[#231215]'
             }`}
           >
             <span>Next</span>
@@ -154,7 +158,7 @@ export default function TVSeriesPage() {
         </div>
       )}
 
-      {/* Interactive Movie / TV Details Modal */}
+      {/* Interactive Details Modal */}
       <MovieDetailsModal
         movie={selectedMovie}
         isOpen={selectedMovie !== null}

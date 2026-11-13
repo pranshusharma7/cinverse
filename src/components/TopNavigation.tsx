@@ -17,6 +17,7 @@ import {
   BookmarkCheck,
   ShieldCheck,
   Flame,
+  Clapperboard,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { playGlassClick, playGlassHover } from '@/lib/sound';
@@ -48,41 +49,42 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
   }, []);
 
   const links = [
-    { label: 'Home', href: '/' },
+    { label: 'Archive', href: '/' },
     { label: 'Explore', href: '/explore' },
-    { label: 'Movies', href: '/movies' },
-    { label: 'TV Shows', href: '/tv' },
-    { label: 'Anime', href: '/anime' },
+    { label: 'Feature Films', href: '/movies' },
+    { label: 'Series', href: '/tv' },
+    { label: 'Anime Vault', href: '/anime' },
     { label: 'Watchlist', href: '/playlist' },
-    { label: 'Cinema Player', href: '/player' },
+    { label: 'Screening Salon', href: '/player' },
   ];
 
   return (
     <header className="w-full flex items-center justify-between gap-4 py-2 px-1 relative z-30 flex-wrap select-none">
       {/* ========================================================
-          LEFT: BRAND EMBLEM & COMMAND PALETTE SEARCH
+          LEFT: ARTISANAL BRAND EMBLEM & SEARCH CAPSULE
       ======================================================== */}
       <div className="flex items-center gap-3">
-        {/* CINEMAVERSE Brand Emblem */}
+        {/* CINÉVERSE Artisanal Brand Emblem */}
         <Link
           href="/"
           onClick={playGlassClick}
           onMouseEnter={playGlassHover}
-          className="flex items-center gap-2.5 group mr-2 select-none"
+          className="flex items-center gap-3 group mr-2 select-none"
         >
-          <div className="w-9 h-9 rounded-2xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-rose-500 p-[1.5px] shadow-md shadow-indigo-500/20 group-hover:scale-105 transition-transform duration-300">
-            <div className="w-full h-full rounded-[14px] flex items-center justify-center bg-white/95 backdrop-blur-md">
-              <span className="font-black text-xs tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-purple-600 to-rose-600">
-                CM
-              </span>
-            </div>
+          <div className="w-9 h-9 rounded-2xl bg-[#7A242B] flex items-center justify-center shadow-md shadow-[#7A242B]/20 group-hover:scale-105 transition-transform duration-300">
+            <Clapperboard className="w-5 h-5 text-[#FAF5F0]" />
           </div>
-          <span className="font-black text-sm sm:text-base tracking-display uppercase text-slate-900">
-            CINEMA<span className="text-indigo-600">VERSE</span>
-          </span>
+          <div className="flex flex-col leading-none">
+            <span className="font-serif text-lg sm:text-xl font-bold tracking-tight text-[#231215]">
+              CINÉ<span className="text-[#7A242B]">VERSE</span>
+            </span>
+            <span className="text-[9px] tracking-[0.22em] uppercase font-sans font-semibold text-[#8C343B] mt-0.5">
+              Curated Film Salon
+            </span>
+          </div>
         </Link>
 
-        {/* Expandable Glass Command-Palette Search Capsule */}
+        {/* Bespoke Editorial Command-Palette Search Capsule */}
         <div
           onClick={() => {
             playGlassClick();
@@ -96,15 +98,15 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
               onOpenSearch();
             }
           }}
-          className="flex items-center gap-2.5 px-4 py-2 rounded-full border border-white/90 bg-white/85 hover:bg-white text-slate-700 hover:text-slate-950 transition-all duration-300 cursor-pointer shadow-sm backdrop-blur-xl"
+          className="flex items-center gap-2.5 px-4 py-2 rounded-full border border-[#E5DDD2] bg-[#FFFDFB] hover:bg-[#FAF6F0] text-[#422B2E] transition-all duration-300 cursor-pointer shadow-xs"
         >
-          <Search className="w-4 h-4 text-indigo-600" />
-          <span className="text-xs font-semibold tracking-wide hidden md:inline text-slate-700">
-            Search titles, anime, IMDb...
+          <Search className="w-4 h-4 text-[#7A242B]" />
+          <span className="text-xs font-medium tracking-wide hidden md:inline text-[#5E474A]">
+            Search curated cinema, auteurs, IMDb...
           </span>
-          <span className="text-xs font-semibold tracking-wide md:hidden text-slate-700">Search</span>
+          <span className="text-xs font-medium tracking-wide md:hidden text-[#5E474A]">Search</span>
           <div className="hidden sm:flex items-center gap-1 pl-1">
-            <kbd className="px-1.5 py-0.5 rounded-md text-[10px] font-mono bg-slate-100 border border-slate-200 text-slate-600">
+            <kbd className="px-1.5 py-0.5 rounded-md text-[10px] font-mono bg-[#F2EAE0] border border-[#E4DBD0] text-[#70585B]">
               ⌘K
             </kbd>
           </div>
@@ -112,9 +114,9 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
       </div>
 
       {/* ========================================================
-          CENTER: SLIDING ACTIVE SEGMENTED PILL NAVIGATION
+          CENTER: EDITORIAL SEGMENTED PILL NAVIGATION
       ======================================================== */}
-      <nav className="hidden xl:flex items-center gap-1 p-1.5 rounded-full liquid-glass-panel border border-white/90 shadow-md">
+      <nav className="hidden xl:flex items-center gap-1 p-1.5 rounded-full bg-[#F4EDE2] border border-[#E4DBD0] shadow-xs">
         {links.map((link) => {
           const isActive =
             link.href === '/'
@@ -128,16 +130,16 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
               href={link.href}
               onClick={playGlassClick}
               onMouseEnter={playGlassHover}
-              className={`relative px-4 py-1.5 rounded-full text-xs font-bold transition-colors duration-200 ${
+              className={`relative px-4 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
                 isActive
-                  ? 'text-indigo-600'
-                  : 'text-slate-600 hover:text-slate-950 hover:bg-white/50'
+                  ? 'text-[#7A242B] font-semibold'
+                  : 'text-[#61474B] hover:text-[#231215] hover:bg-white/40'
               }`}
             >
               {isActive && (
                 <motion.div
                   layoutId="activeNavSegmentLight"
-                  className="absolute inset-0 rounded-full bg-white border border-white shadow-sm"
+                  className="absolute inset-0 rounded-full bg-[#FFFDFB] border border-[#E5DDD2] shadow-xs"
                   transition={{ type: 'spring', stiffness: 350, damping: 28 }}
                 />
               )}
@@ -148,10 +150,26 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
       </nav>
 
       {/* ========================================================
-          RIGHT: NOTIFICATIONS & PROFILE PILL (NO DARK TOGGLE!)
+          RIGHT: WATCHLIST BADGE, NOTIFICATIONS & PROFILE
       ======================================================== */}
       <div className="flex items-center gap-2.5">
-        {/* Notification Bell with Unread Pulse */}
+        {/* Watchlist Counter Pill (Quick Access) */}
+        <Link
+          href="/playlist"
+          onClick={playGlassClick}
+          onMouseEnter={playGlassHover}
+          className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#FFFDFB] hover:bg-[#F9F4EE] border border-[#E5DDD2] text-xs font-semibold text-[#54383B] transition shadow-xs"
+        >
+          <BookmarkCheck className="w-3.5 h-3.5 text-[#7A242B]" />
+          <span>Watchlist</span>
+          {playlistCount > 0 && (
+            <span className="px-1.5 py-0.2 rounded-full bg-[#7A242B] text-white text-[10px] font-bold">
+              {playlistCount}
+            </span>
+          )}
+        </Link>
+
+        {/* Notification Bell with Terracotta Pulse */}
         <div className="relative">
           <button
             onClick={() => {
@@ -160,11 +178,11 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
               setProfileOpen(false);
             }}
             aria-label="Notifications"
-            className="p-2 sm:p-2.5 rounded-full liquid-glass-pill text-slate-700 hover:text-slate-950 relative transition hover:scale-105 border border-white shadow-xs"
+            className="p-2 sm:p-2.5 rounded-full bg-[#FFFDFB] hover:bg-[#FAF6F0] text-[#54383B] hover:text-[#231215] relative transition border border-[#E5DDD2] shadow-xs"
           >
             <Bell className="w-4 h-4" />
             {hasUnread && (
-              <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-rose-500 animate-pulse ring-2 ring-white" />
+              <span className="absolute top-2 right-2 w-2 h-2 rounded-full bg-[#7A242B] animate-pulse ring-2 ring-white" />
             )}
           </button>
 
@@ -175,45 +193,45 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
                 initial={{ opacity: 0, y: 8, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 8, scale: 0.95 }}
-                className="absolute right-0 mt-2 w-80 p-4 rounded-3xl liquid-glass-panel z-50 text-xs shadow-2xl border border-white bg-white/95 backdrop-blur-3xl text-slate-900"
+                className="absolute right-0 mt-2 w-80 p-4 rounded-3xl z-50 text-xs shadow-2xl border border-[#E5DDD2] bg-[#FFFDFB] text-[#231215]"
               >
-                <div className="flex items-center justify-between pb-2.5 border-b border-slate-100 font-bold">
-                  <div className="flex items-center gap-1.5 text-slate-900">
-                    <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
-                    <span>Cinema Releases &amp; Updates</span>
+                <div className="flex items-center justify-between pb-2.5 border-b border-[#F0E8DD] font-bold">
+                  <div className="flex items-center gap-1.5 text-[#231215]">
+                    <Sparkles className="w-3.5 h-3.5 text-[#7A242B]" />
+                    <span className="font-serif">Salon Gazette &amp; Premieres</span>
                   </div>
                   <button
                     onClick={() => setHasUnread(false)}
-                    className="text-[10px] text-indigo-600 hover:underline font-semibold"
+                    className="text-[10px] text-[#7A242B] hover:underline font-semibold"
                   >
                     Mark read
                   </button>
                 </div>
                 <div className="py-2.5 space-y-3">
                   <div className="flex items-start gap-2.5 group/item cursor-pointer">
-                    <div className="w-2 h-2 rounded-full bg-rose-500 shrink-0 mt-1.5" />
+                    <div className="w-2 h-2 rounded-full bg-[#7A242B] shrink-0 mt-1.5" />
                     <div>
-                      <p className="font-bold text-slate-900">Universal Cinema Player Ready</p>
-                      <p className="text-[11px] text-slate-600">
-                        Paste any YouTube link to auto-play or drop local video files.
+                      <p className="font-bold text-[#231215]">Direct Cinema Stream Connected</p>
+                      <p className="text-[11px] text-[#694F52]">
+                        Dedicated high-definition cinema streaming powered directly by nxsha.space.
                       </p>
                     </div>
                   </div>
                   <div className="flex items-start gap-2.5 group/item cursor-pointer">
-                    <div className="w-2 h-2 rounded-full bg-indigo-500 shrink-0 mt-1.5" />
+                    <div className="w-2 h-2 rounded-full bg-amber-600 shrink-0 mt-1.5" />
                     <div>
-                      <p className="font-bold text-slate-900">Multi-Server Streaming Active</p>
-                      <p className="text-[11px] text-slate-600">
-                        Nxsha Space, VidSrc &amp; AutoEmbed backup servers enabled.
+                      <p className="font-bold text-[#231215]">Universal Screening Salon</p>
+                      <p className="text-[11px] text-[#694F52]">
+                        Paste external YouTube streams or drop local video files anytime.
                       </p>
                     </div>
                   </div>
                   <div className="flex items-start gap-2.5 group/item cursor-pointer">
-                    <div className="w-2 h-2 rounded-full bg-purple-500 shrink-0 mt-1.5" />
+                    <div className="w-2 h-2 rounded-full bg-stone-600 shrink-0 mt-1.5" />
                     <div>
-                      <p className="font-bold text-slate-900">Anime Catalog Online</p>
-                      <p className="text-[11px] text-slate-600">
-                        Explore Demon Slayer, Jujutsu Kaisen, and top AniList releases.
+                      <p className="font-bold text-[#231215]">Curated Masterpieces Updated</p>
+                      <p className="text-[11px] text-[#694F52]">
+                        Explore the newly added Auteur Collection &amp; Anime Vault.
                       </p>
                     </div>
                   </div>
@@ -232,24 +250,24 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
               setNotificationsOpen(false);
             }}
             onMouseEnter={playGlassHover}
-            className="flex items-center gap-2 px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-full liquid-glass-pill transition text-left group hover:scale-102 border border-white shadow-sm"
+            className="flex items-center gap-2 px-2.5 py-1.5 sm:px-3 sm:py-1.5 rounded-full bg-[#FFFDFB] hover:bg-[#FAF6F0] transition text-left group border border-[#E5DDD2] shadow-xs"
           >
-            <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-indigo-500 via-rose-500 to-sky-400 p-[1.5px] overflow-hidden shadow-xs shrink-0">
+            <div className="w-7 h-7 rounded-full bg-[#7A242B] p-[1.5px] overflow-hidden shadow-xs shrink-0">
               <img
                 src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop"
-                alt="Cinema VIP"
+                alt="Cinema Patron"
                 className="w-full h-full object-cover rounded-full"
               />
             </div>
             <div className="hidden sm:flex flex-col leading-tight">
-              <span className="text-[11px] font-bold text-slate-900">
-                Cinema VIP
+              <span className="text-[11px] font-bold text-[#231215]">
+                Cinéaste Member
               </span>
-              <span className="text-[9px] text-indigo-600 font-semibold tracking-wide">
-                Daylight Pro
+              <span className="text-[9px] text-[#7A242B] font-semibold tracking-wide">
+                Salon Patron
               </span>
             </div>
-            <ChevronDown className="w-3.5 h-3.5 text-slate-500 group-hover:text-slate-900 transition" />
+            <ChevronDown className="w-3.5 h-3.5 text-[#8A7174] group-hover:text-[#231215] transition" />
           </button>
 
           {/* Profile & Quick Settings Dropdown */}
@@ -259,66 +277,46 @@ export const TopNavigation: React.FC<TopNavigationProps> = ({
                 initial={{ opacity: 0, y: 8, scale: 0.95 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: 8, scale: 0.95 }}
-                className="absolute right-0 mt-2 w-64 p-3.5 rounded-3xl liquid-glass-panel z-50 text-xs shadow-2xl border border-white bg-white/95 backdrop-blur-3xl space-y-3 text-slate-900"
+                className="absolute right-0 mt-2 w-56 p-2 rounded-2xl z-50 text-xs shadow-2xl border border-[#E5DDD2] bg-[#FFFDFB] text-[#231215]"
               >
-                <div className="flex items-center gap-3 pb-3 border-b border-slate-100">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-600 p-[1.5px] overflow-hidden shadow-xs">
-                    <img
-                      src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop"
-                      alt="Avatar"
-                      className="w-full h-full object-cover rounded-full"
-                    />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-slate-900 text-sm">Cinema Guest</h4>
-                    <p className="text-[10px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full inline-flex items-center gap-1 font-bold border border-emerald-200 mt-0.5">
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                      Premium Active
-                    </p>
-                  </div>
+                <div className="p-2 border-b border-[#F0E8DD]">
+                  <p className="font-bold text-sm text-[#231215]">Patron Screening Lounge</p>
+                  <p className="text-[11px] text-[#7E6568]">Lifetime Editorial Access</p>
                 </div>
-
-                <div className="space-y-1">
+                <div className="py-1">
                   <Link
                     href="/playlist"
                     onClick={() => {
                       playGlassClick();
                       setProfileOpen(false);
                     }}
-                    className="flex items-center justify-between p-2 rounded-xl hover:bg-slate-100 text-slate-800 transition font-semibold"
+                    className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-[#F6EFE6] transition text-[#3A2427]"
                   >
-                    <span className="flex items-center gap-2">
-                      <BookmarkCheck className="w-3.5 h-3.5 text-indigo-600" />
-                      <span>My Watchlist</span>
-                    </span>
-                    <span className="px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 font-bold text-[10px] border border-indigo-200">
-                      {playlistCount}
-                    </span>
+                    <BookmarkCheck className="w-4 h-4 text-[#7A242B]" />
+                    <span>My Curated Watchlist</span>
                   </Link>
-
-                  <button
-                    onClick={() => {
-                      playGlassClick();
-                      setProfileOpen(false);
-                      onOpenPreferences();
-                    }}
-                    className="w-full flex items-center gap-2 p-2 rounded-xl hover:bg-slate-100 text-slate-800 transition text-left font-semibold"
-                  >
-                    <Sliders className="w-3.5 h-3.5 text-purple-600" />
-                    <span>Playback Settings</span>
-                  </button>
-
                   <Link
                     href="/player"
                     onClick={() => {
                       playGlassClick();
                       setProfileOpen(false);
                     }}
-                    className="flex items-center gap-2 p-2 rounded-xl hover:bg-slate-100 text-slate-800 transition font-semibold"
+                    className="flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-[#F6EFE6] transition text-[#3A2427]"
                   >
-                    <Tv className="w-3.5 h-3.5 text-rose-600" />
-                    <span>Universal Player</span>
+                    <Play className="w-4 h-4 text-[#7A242B]" />
+                    <span>Universal Screening Salon</span>
                   </Link>
+                  <button
+                    onClick={() => {
+                      playGlassClick();
+                      setProfileOpen(false);
+                      onOpenPreferences();
+                    }}
+                    className="w-full flex items-center gap-2 px-3 py-2 rounded-xl hover:bg-[#F6EFE6] transition text-[#3A2427] text-left"
+                  >
+                    <Sliders className="w-4 h-4 text-[#7A242B]" />
+                    <span>Playback Preferences</span>
+                  </button>
                 </div>
               </motion.div>
             )}

@@ -16,15 +16,15 @@ interface SearchModalProps {
 
 const SEARCH_SUGGESTIONS = [
   'Interstellar',
-  'Avengers',
-  'John Wick',
-  'Breaking Bad',
-  'Stranger Things',
+  'Oppenheimer',
+  'Past Lives',
+  'Spirited Away',
+  'Succession',
+  'The Godfather',
   'Demon Slayer',
-  'Attack on Titan',
-  'Naruto',
-  'One Piece',
-  'Fight Club',
+  'Dune',
+  'Blade Runner 2049',
+  'Parasite',
 ];
 
 export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, onSelectMovie }) => {
@@ -47,7 +47,6 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, onSel
     }
   }, [isOpen]);
 
-  // Exactly 350ms debounce
   useEffect(() => {
     if (!query.trim()) {
       setResults([]);
@@ -72,7 +71,6 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, onSel
     return () => clearTimeout(timeout);
   }, [query]);
 
-  // Keyboard Navigation: ArrowDown, ArrowUp, Enter
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (results.length === 0) return;
 
@@ -92,7 +90,6 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, onSel
     }
   };
 
-  // Speech Recognition / Voice Search
   const handleVoiceSearch = () => {
     playGlassClick();
     if (typeof window === 'undefined') return;
@@ -152,7 +149,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, onSel
   return (
     <AnimatePresence>
       <div className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-24 px-4 select-none">
-        {/* Spatial Frosted Backdrop */}
+        {/* Soft Ambient Backdrop */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -161,7 +158,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, onSel
             playGlassClick();
             onClose();
           }}
-          className="fixed inset-0 bg-slate-900/40 backdrop-blur-2xl"
+          className="fixed inset-0 bg-[#231215]/50 backdrop-blur-md"
         />
 
         {/* Modal Window */}
@@ -170,25 +167,25 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, onSel
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: -20 }}
           transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-          className="relative w-full max-w-2xl rounded-[2.5rem] bg-white/95 border-2 border-white shadow-2xl backdrop-blur-3xl p-6 sm:p-7 z-10 text-slate-900"
+          className="relative w-full max-w-2xl rounded-3xl sm:rounded-[2.4rem] bg-[#FFFDFB] border border-[#E5DDD2] shadow-2xl p-6 sm:p-7 z-10 text-[#231215]"
         >
           {/* Search Header Bar */}
-          <div className="flex items-center gap-3 pb-4 border-b border-slate-200/80">
-            <Search className="w-5 h-5 text-indigo-600 shrink-0" />
+          <div className="flex items-center gap-3 pb-4 border-b border-[#F0E8DD]">
+            <Search className="w-5 h-5 text-[#7A242B] shrink-0" />
             <input
               ref={inputRef}
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Search movies, TV shows, anime (Interstellar, Naruto, Stranger Things...)"
-              className="flex-1 bg-transparent border-none outline-none text-slate-900 placeholder:text-slate-400 text-sm sm:text-base font-bold"
+              placeholder="Search masterworks, directors, series (Interstellar, Dune, Miyazaki...)"
+              className="flex-1 bg-transparent border-none outline-none text-[#231215] placeholder:text-[#9C8A8D] text-sm sm:text-base font-medium"
             />
 
             {query && (
               <button
                 onClick={() => setQuery('')}
-                className="p-1.5 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-700 transition"
+                className="p-1.5 rounded-full hover:bg-[#F6EFE6] text-[#7A242B] transition"
                 title="Clear query"
               >
                 <X className="w-3.5 h-3.5" />
@@ -200,8 +197,8 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, onSel
               onClick={handleVoiceSearch}
               className={`p-2 rounded-full transition ${
                 isListening
-                  ? 'bg-rose-500 text-white animate-pulse'
-                  : 'hover:bg-slate-100 text-slate-500 hover:text-slate-900'
+                  ? 'bg-[#7A242B] text-white animate-pulse'
+                  : 'hover:bg-[#F6EFE6] text-[#695155] hover:text-[#231215]'
               }`}
               title="Voice Search"
             >
@@ -214,7 +211,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, onSel
                 playGlassClick();
                 onClose();
               }}
-              className="p-2 rounded-full hover:bg-slate-100 text-slate-500 hover:text-slate-900 transition"
+              className="p-2 rounded-full hover:bg-[#F6EFE6] text-[#695155] hover:text-[#231215] transition"
               title="Close (Esc)"
             >
               <X className="w-5 h-5" />
@@ -222,33 +219,33 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, onSel
           </div>
 
           {/* Results / Suggestions Container */}
-          <div className="mt-4 max-h-[60vh] overflow-y-auto pr-1 space-y-2 custom-scrollbar">
+          <div className="mt-4 max-h-[60vh] overflow-y-auto pr-1 space-y-2">
             {loading && (
-              <div className="py-12 flex flex-col items-center justify-center gap-2 text-slate-500">
-                <Loader2 className="w-6 h-6 animate-spin text-indigo-600" />
-                <span className="text-xs font-bold">
-                  Searching universal cinema &amp; anime database...
+              <div className="py-12 flex flex-col items-center justify-center gap-2 text-[#695155]">
+                <Loader2 className="w-6 h-6 animate-spin text-[#7A242B]" />
+                <span className="text-xs font-serif">
+                  Searching universal film archive...
                 </span>
               </div>
             )}
 
             {!loading && query && results.length === 0 && (
-              <div className="py-10 text-center text-slate-600 text-xs font-medium space-y-2">
+              <div className="py-10 text-center text-[#695155] text-xs font-medium space-y-2">
                 <p>
                   No matching titles found for &ldquo;
-                  <span className="text-slate-900 font-extrabold">{query}</span>&rdquo;.
+                  <span className="text-[#231215] font-serif font-bold">{query}</span>&rdquo;.
                 </p>
-                <p className="text-[11px] text-slate-400">
-                  Try searching an actor, alternative title, or anime name.
+                <p className="text-[11px] text-[#9C8A8D]">
+                  Try searching an auteur, actor, or alternative title.
                 </p>
               </div>
             )}
 
             {!loading && !query && (
               <div className="py-4 space-y-3">
-                <div className="flex items-center gap-1.5 text-xs font-black text-slate-800">
-                  <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
-                  <span>Popular Suggestions</span>
+                <div className="flex items-center gap-1.5 text-xs font-serif font-bold text-[#231215]">
+                  <Sparkles className="w-3.5 h-3.5 text-[#7A242B]" />
+                  <span>Curatorial Recommendations</span>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {SEARCH_SUGGESTIONS.map((s) => (
@@ -256,7 +253,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, onSel
                       key={s}
                       onClick={() => setQuery(s)}
                       onMouseEnter={playGlassHover}
-                      className="px-3.5 py-1.5 rounded-full bg-slate-100/90 hover:bg-indigo-50 border border-slate-200 text-xs font-bold text-slate-700 hover:text-indigo-700 transition shadow-xs"
+                      className="px-3.5 py-1.5 rounded-full bg-[#FAF7F2] hover:bg-[#F4ECE1] border border-[#E5DDD2] text-xs font-medium text-[#483034] hover:text-[#7A242B] transition shadow-xs"
                     >
                       {s}
                     </button>
@@ -265,98 +262,72 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose, onSel
               </div>
             )}
 
-            {!loading &&
-              results.map((movie, idx) => {
-                const isSelected = selectedIndex === idx;
-                const isTv = movie.type === 'tv';
-                const isAnime = Boolean(movie.aniListId || movie.id.startsWith('anime-'));
+            {/* Movie Results List */}
+            {!loading && results.map((movie, idx) => {
+              const isSelected = selectedIndex === idx;
 
-                return (
-                  <div
-                    key={`${movie.id}-${idx}`}
-                    onClick={() => handleSelect(movie)}
-                    onMouseEnter={() => {
-                      setSelectedIndex(idx);
-                      playGlassHover();
-                    }}
-                    className={`flex items-center justify-between p-3 rounded-2xl transition cursor-pointer group ${
-                      isSelected
-                        ? 'bg-indigo-50/90 border-2 border-indigo-400/80 shadow-md'
-                        : 'bg-slate-50/80 hover:bg-slate-100/90 border border-slate-200/70'
-                    }`}
-                  >
-                    <div className="flex items-center gap-3.5 min-w-0">
-                      <img
-                        src={movie.posterUrl || movie.backdropUrl}
-                        alt={movie.title}
-                        className="w-12 h-16 object-cover rounded-xl border border-white shadow-sm shrink-0"
-                      />
-                      <div className="min-w-0">
-                        <div className="flex items-center gap-2">
-                          <h4 className="text-sm font-black text-slate-900 group-hover:text-indigo-600 transition-colors truncate">
-                            {movie.title}
-                          </h4>
-                          {/* Media Type Badge */}
-                          <span
-                            className={`text-[9px] font-extrabold px-2 py-0.5 rounded-full uppercase shrink-0 ${
-                              isAnime
-                                ? 'bg-purple-100 text-purple-700 border border-purple-200'
-                                : isTv
-                                ? 'bg-sky-100 text-sky-700 border border-sky-200'
-                                : 'bg-emerald-100 text-emerald-700 border border-emerald-200'
-                            }`}
-                          >
-                            {isAnime ? 'Anime' : isTv ? 'TV' : 'Movie'}
+              return (
+                <div
+                  key={movie.id}
+                  onClick={() => handleSelect(movie, 'watch')}
+                  onMouseEnter={() => setSelectedIndex(idx)}
+                  className={`flex items-center justify-between p-2.5 rounded-2xl transition cursor-pointer ${
+                    isSelected
+                      ? 'bg-[#FAF5EE] border border-[#E5DDD2]'
+                      : 'hover:bg-[#FAF7F2]'
+                  }`}
+                >
+                  <div className="flex items-center gap-3 min-w-0 flex-1">
+                    <img
+                      src={movie.posterUrl || movie.backdropUrl}
+                      alt={movie.title}
+                      className="w-11 h-14 object-cover rounded-xl shrink-0 border border-[#E5DDD2]"
+                    />
+                    <div className="min-w-0 flex-1 space-y-0.5">
+                      <h4 className="font-serif text-sm font-bold text-[#231215] truncate">
+                        {movie.title}
+                      </h4>
+                      <p className="text-xs text-[#7A6165] flex items-center gap-2 tabular-nums">
+                        {movie.releaseYear && <span>{movie.releaseYear}</span>}
+                        {movie.rating ? (
+                          <span className="flex items-center gap-0.5 font-bold text-[#C27803]">
+                            ★ {movie.rating.toFixed(1)}
                           </span>
-                        </div>
-                        <p className="text-xs text-slate-500 line-clamp-1 mt-0.5 font-normal">
-                          {movie.overview}
-                        </p>
-                        <div className="flex items-center gap-3 text-[11px] text-slate-500 font-medium mt-1">
-                          <span className="text-indigo-600 font-bold">
-                            {movie.genres?.slice(0, 2).join(', ') || 'Cinema'}
+                        ) : null}
+                        {movie.genres?.[0] && (
+                          <span className="text-[10px] uppercase font-sans tracking-wider text-[#7A242B]">
+                            {movie.genres[0]}
                           </span>
-                          <span>•</span>
-                          <span className="tabular-nums">{movie.releaseYear || '2024'}</span>
-                          {movie.rating ? (
-                            <>
-                              <span>•</span>
-                              <span className="text-amber-600 font-extrabold flex items-center gap-0.5 tabular-nums">
-                                <Star className="w-3 h-3 fill-amber-400 text-amber-500" />
-                                {movie.rating.toFixed(1)}
-                              </span>
-                            </>
-                          ) : null}
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-2 shrink-0 ml-3">
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleSelect(movie, 'details');
-                        }}
-                        className="text-[11px] font-bold text-slate-700 hover:text-slate-950 px-3 py-1.5 rounded-full bg-white hover:bg-slate-100 border border-slate-200 transition hidden sm:inline-block shadow-xs"
-                      >
-                        Details
-                      </button>
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleSelect(movie, 'watch');
-                        }}
-                        className="text-xs font-bold text-white px-3.5 py-1.5 rounded-full bg-indigo-600 hover:bg-indigo-700 transition shadow-md shadow-indigo-600/25 flex items-center gap-1.5"
-                      >
-                        <Play className="w-3 h-3 fill-white" />
-                        <span>Play</span>
-                      </button>
+                        )}
+                      </p>
                     </div>
                   </div>
-                );
-              })}
+
+                  <div className="flex items-center gap-1.5 shrink-0 pl-2">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleSelect(movie, 'details');
+                      }}
+                      className="p-2 rounded-full hover:bg-white text-[#695155] hover:text-[#7A242B] transition"
+                      title="View Notes"
+                    >
+                      <Info className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleSelect(movie, 'watch');
+                      }}
+                      className="p-2 rounded-full bg-[#7A242B] text-white hover:bg-[#641C22] transition shadow-xs"
+                      title="Screen Movie"
+                    >
+                      <Play className="w-4 h-4 fill-white" />
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </motion.div>
       </div>

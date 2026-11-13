@@ -28,35 +28,37 @@ export default function PopularPage() {
   }, []);
 
   return (
-    <div className="w-full space-y-6">
-      <div className="pb-3 border-b border-slate-200/80 flex items-center justify-between">
+    <div className="w-full space-y-6 pb-12 select-none">
+      <div className="p-6 sm:p-9 rounded-3xl sm:rounded-[2.4rem] bg-[#FFFDFB] border border-[#E5DDD2] shadow-sm flex items-center justify-between text-[#231215]">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight flex items-center gap-2.5">
-            <Flame className="w-7 h-7 text-amber-500 fill-amber-400" />
-            News &amp; Popular
+          <h1 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#231215] tracking-tight flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-[#7A242B] flex items-center justify-center text-white shadow-xs">
+              <Flame className="w-5 h-5 text-white" />
+            </div>
+            <span>Gazette &amp; Celebrated Cinema</span>
           </h1>
-          <p className="text-xs text-slate-500 font-medium mt-1">
-            Top trending blockbusters, worldwide box-office sensations and news.
+          <p className="text-xs sm:text-sm text-[#6E5558] font-normal mt-1.5">
+            Top trending festival releases, worldwide box-office sensations, and curatorial updates.
           </p>
         </div>
       </div>
 
       {/* Featured News Pill Banner */}
-      <div className="p-4 rounded-3xl liquid-glass-panel border-white shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div className="p-5 rounded-2xl bg-[#FFFDFB] border border-[#E5DDD2] shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-[#231215]">
         <div className="flex items-center gap-3.5">
-          <div className="p-3 rounded-2xl bg-indigo-50 border border-indigo-100 text-indigo-600 shadow-sm">
+          <div className="p-3 rounded-2xl bg-[#F6ECE6] text-[#7A242B] shadow-xs">
             <Newspaper className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="text-sm font-extrabold text-slate-900">4K Spatial Audio Stream Enhancements</h3>
-            <p className="text-xs text-slate-500 font-medium">
-              CINÉVERSE now supports adaptive multi-bitrate HLS streams with liquid refraction visuals.
+            <h3 className="font-serif text-sm font-bold text-[#231215]">Artisanal Screening Salon &amp; Direct Streaming</h3>
+            <p className="text-xs text-[#6E5558] font-normal">
+              CINÉVERSE now features direct nxsha.space cinema streaming with zero extraneous buttons.
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-2 text-xs font-bold text-indigo-600 bg-white px-3.5 py-1.5 rounded-full border border-white shadow-sm">
+        <div className="flex items-center gap-2 text-xs font-semibold text-[#7A242B] bg-[#FAF5EE] px-3.5 py-1.5 rounded-full border border-[#E8DFD4] shadow-xs">
           <TrendingUp className="w-4 h-4" />
-          <span>Updated Hourly</span>
+          <span>Curated Daily</span>
         </div>
       </div>
 

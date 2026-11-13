@@ -67,12 +67,12 @@ export const MovieShelf: React.FC<MovieShelfProps> = ({
   if (!movies || movies.length === 0) return null;
 
   return (
-    <div className="w-full select-none space-y-3">
+    <div className="w-full select-none space-y-3.5">
       {/* Section Header */}
       <div className="flex items-center justify-between px-1">
-        <div className="flex items-center gap-2">
-          {Icon && <Icon className="w-4 h-4 text-indigo-600" />}
-          <h2 className="text-sm sm:text-base font-extrabold text-slate-900 tracking-tight">
+        <div className="flex items-center gap-2.5">
+          {Icon && <Icon className="w-4 h-4 text-[#7A242B]" />}
+          <h2 className="font-serif text-lg sm:text-xl font-bold text-[#231215] tracking-tight">
             {title}
           </h2>
         </div>
@@ -81,16 +81,16 @@ export const MovieShelf: React.FC<MovieShelfProps> = ({
           <Link
             href={seeAllHref}
             onClick={playGlassClick}
-            className="text-xs px-3.5 py-1.5 rounded-full bg-white/80 hover:bg-white font-semibold text-slate-700 hover:text-slate-950 transition border border-white/90 shadow-sm"
+            className="text-xs px-3.5 py-1.5 rounded-full bg-[#FFFDFB] hover:bg-[#FAF6F0] font-semibold text-[#54383B] hover:text-[#231215] transition border border-[#E5DDD2] shadow-xs"
           >
-            See all
+            Explore Archive
           </Link>
           <div className="hidden sm:flex items-center gap-1.5">
             <button
               onClick={() => scroll('left')}
               onMouseEnter={playGlassHover}
               aria-label="Scroll left"
-              className="p-1.5 rounded-full bg-white/80 hover:bg-white text-slate-700 hover:text-slate-950 transition shadow-sm border border-white/90 hover:scale-110 active:scale-90"
+              className="p-1.5 rounded-full bg-[#FFFDFB] hover:bg-[#FAF6F0] text-[#54383B] hover:text-[#231215] transition shadow-xs border border-[#E5DDD2] hover:scale-105 active:scale-95"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
@@ -98,7 +98,7 @@ export const MovieShelf: React.FC<MovieShelfProps> = ({
               onClick={() => scroll('right')}
               onMouseEnter={playGlassHover}
               aria-label="Scroll right"
-              className="p-1.5 rounded-full bg-white/80 hover:bg-white text-slate-700 hover:text-slate-950 transition shadow-sm border border-white/90 hover:scale-110 active:scale-90"
+              className="p-1.5 rounded-full bg-[#FFFDFB] hover:bg-[#FAF6F0] text-[#54383B] hover:text-[#231215] transition shadow-xs border border-[#E5DDD2] hover:scale-105 active:scale-95"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
@@ -109,7 +109,7 @@ export const MovieShelf: React.FC<MovieShelfProps> = ({
       {/* Horizontal Cards Rail */}
       <div
         ref={scrollContainerRef}
-        className="flex items-center gap-3 sm:gap-4 overflow-x-auto no-scrollbar scroll-smooth pb-3 pt-1 touch-pan-x"
+        className="flex items-center gap-3.5 sm:gap-4 overflow-x-auto no-scrollbar scroll-smooth pb-3 pt-1 touch-pan-x"
       >
         {movies.map((movie, idx) => {
           const inList = watchlistIds[movie.id];
@@ -118,7 +118,7 @@ export const MovieShelf: React.FC<MovieShelfProps> = ({
           return (
             <motion.div
               key={`${movie.id}-${idx}`}
-              whileHover={{ scale: 1.04 }}
+              whileHover={{ y: -3 }}
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
               onClick={() => {
                 playGlassClick();
@@ -129,15 +129,15 @@ export const MovieShelf: React.FC<MovieShelfProps> = ({
                 }
               }}
               onMouseEnter={playGlassHover}
-              className={`group relative flex-none rounded-[1.5rem] sm:rounded-[2rem] overflow-hidden border border-white/60 hover:border-indigo-400/80 transition-all duration-300 shadow-md hover:shadow-xl cursor-pointer bg-slate-900/10 liquid-gloss ${
+              className={`group relative flex-none rounded-2xl sm:rounded-[1.6rem] overflow-hidden border border-[#E5DDD2] hover:border-[#D6CBC0] transition-all duration-300 shadow-sm hover:shadow-xl cursor-pointer bg-[#F5EFE6] ${
                 isPoster
-                  ? 'w-[140px] sm:w-[175px] md:w-[195px] h-[210px] sm:h-[260px] md:h-[290px]'
-                  : 'w-[195px] sm:w-[240px] md:w-[270px] h-[145px] sm:h-[175px] md:h-[195px]'
+                  ? 'w-[145px] sm:w-[180px] md:w-[200px] h-[215px] sm:h-[265px] md:h-[295px]'
+                  : 'w-[200px] sm:w-[245px] md:w-[275px] h-[150px] sm:h-[180px] md:h-[200px]'
               }`}
             >
               {/* Image Artwork */}
               <div
-                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-110"
+                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-106"
                 style={{
                   backgroundImage: `url(${
                     isPoster
@@ -147,95 +147,59 @@ export const MovieShelf: React.FC<MovieShelfProps> = ({
                 }}
               />
 
-              {/* Multi-stop VisionOS gradient vignette for crystal clear text */}
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-r from-slate-950/60 via-transparent to-transparent" />
+              {/* Gradient Vignette */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#231215] via-[#231215]/35 to-transparent opacity-85 group-hover:opacity-80 transition-opacity" />
 
-              {/* Rank Number Badge for Top Charts */}
+              {/* Top Rank Number (For Trending Top 10) */}
               {showRankNumber && (
-                <div className="absolute top-2 left-3 font-black text-3xl sm:text-5xl text-white/30 select-none group-hover:text-white/50 transition-colors tracking-tighter">
-                  {idx + 1}
+                <div className="absolute top-2.5 left-2.5 z-10">
+                  <span className="font-serif text-2xl sm:text-3xl font-black text-white/90 drop-shadow-md">
+                    #{idx + 1}
+                  </span>
                 </div>
               )}
 
-              {/* Top Quick Actions (Info & Watchlist) */}
-              <div className="relative z-10 p-2.5 sm:p-3.5 flex items-center justify-between">
-                {movie.genres?.[0] ? (
-                  <span className="text-[9px] sm:text-[10px] font-bold text-white bg-slate-900/70 backdrop-blur-md px-2 sm:px-2.5 py-0.5 rounded-full border border-white/20 inline-block shadow-sm">
-                    {movie.genres[0]}
+              {/* Top Rating Badge */}
+              <div className="absolute top-2.5 right-2.5 z-10">
+                {movie.rating ? (
+                  <span className="flex items-center gap-1 text-[11px] font-bold px-2 py-0.5 rounded-full bg-[#FAF5EE]/95 border border-[#E8DFD4] text-[#231215] shadow-xs tabular-nums">
+                    <Star className="w-3 h-3 fill-[#C27803] text-[#C27803]" />
+                    {movie.rating.toFixed(1)}
                   </span>
-                ) : <div />}
+                ) : null}
+              </div>
 
-                <div className="flex items-center gap-1.5 opacity-90 sm:opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      playGlassClick();
-                      if (onOpenDetails) {
-                        onOpenDetails(movie);
-                      } else {
-                        router.push(`/movie/${movie.id}`);
-                      }
-                    }}
-                    aria-label="View details"
-                    className="p-1 sm:p-1.5 rounded-full bg-slate-900/70 hover:bg-slate-900 text-white border border-white/30 backdrop-blur-md transition hover:scale-110"
-                  >
-                    <Info className="w-3 h-3" />
-                  </button>
+              {/* Central Play Trigger on Hover */}
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-10">
+                <div className="w-11 h-11 rounded-full bg-[#7A242B] text-white flex items-center justify-center shadow-xl transform scale-75 group-hover:scale-100 transition-transform duration-300">
+                  <Play className="w-4 h-4 fill-current ml-0.5" />
+                </div>
+              </div>
 
+              {/* Bottom Film Metadata */}
+              <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-3.5 z-10 space-y-1">
+                <h3 className="font-serif text-xs sm:text-sm font-bold text-white line-clamp-1 group-hover:text-amber-100 transition-colors">
+                  {movie.title}
+                </h3>
+                <div className="flex items-center justify-between text-[10px] text-white/80 tabular-nums">
+                  <div className="flex items-center gap-1.5">
+                    {movie.releaseYear && <span>{movie.releaseYear}</span>}
+                    {movie.type === 'tv' && (
+                      <span className="px-1.5 py-0.2 rounded bg-white/20 text-white font-medium">
+                        Series
+                      </span>
+                    )}
+                  </div>
                   <button
                     onClick={(e) => handleToggleWatchlist(e, movie)}
                     aria-label={inList ? 'Remove from Watchlist' : 'Add to Watchlist'}
-                    className={`p-1 sm:p-1.5 rounded-full backdrop-blur-md border transition hover:scale-110 ${
-                      inList
-                        ? 'bg-indigo-600 border-indigo-400 text-white'
-                        : 'bg-slate-900/70 hover:bg-slate-900 border-white/30 text-white'
+                    className={`p-1 rounded-full transition ${
+                      inList ? 'text-[#C27803]' : 'text-white/70 hover:text-white'
                     }`}
                   >
                     {inList ? <Check className="w-3 h-3" /> : <Plus className="w-3 h-3" />}
                   </button>
                 </div>
-              </div>
-
-              {/* Bottom Card Info & Play Button */}
-              <div className="relative z-10 w-full p-2.5 sm:p-3.5 mt-auto flex items-end justify-between gap-2">
-                <div className="space-y-0.5 sm:space-y-1 max-w-[76%]">
-                  <h3 className="text-xs sm:text-sm font-bold text-white leading-tight truncate group-hover:text-indigo-200 transition-colors drop-shadow-sm">
-                    {movie.title}
-                  </h3>
-
-                  <div className="flex items-center gap-2 text-[9px] sm:text-[10px] text-white/80 font-medium">
-                    {movie.rating ? (
-                      <span className="flex items-center gap-1 text-amber-300 font-bold tabular-nums">
-                        <Star className="w-2.5 sm:w-3 h-2.5 sm:h-3 fill-amber-300" />
-                        {movie.rating.toFixed(1)}
-                      </span>
-                    ) : null}
-
-                    {movie.runtime && (
-                      <span className="flex items-center gap-1 tabular-nums text-white/70">
-                        <Clock className="w-2 sm:w-2.5 h-2 sm:h-2.5 text-indigo-300" />
-                        {movie.runtime}
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                {/* Circular Play CTA */}
-                <motion.button
-                  whileHover={{ scale: 1.15 }}
-                  whileTap={{ scale: 0.92 }}
-                  transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    playGlassClick();
-                    router.push(`/watch/${movie.id}`);
-                  }}
-                  aria-label={`Play ${movie.title}`}
-                  className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white/95 group-hover:bg-white text-slate-950 flex items-center justify-center backdrop-blur-md border border-white transition-all shadow-[0_4px_12px_rgba(0,0,0,0.3)] shrink-0"
-                >
-                  <Play className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-slate-950 ml-0.5" />
-                </motion.button>
               </div>
             </motion.div>
           );
@@ -244,4 +208,3 @@ export const MovieShelf: React.FC<MovieShelfProps> = ({
     </div>
   );
 };
-

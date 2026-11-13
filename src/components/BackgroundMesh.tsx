@@ -5,8 +5,8 @@ import React, { useEffect, useState } from 'react';
 export const BackgroundMesh: React.FC = () => {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [heroAccent, setHeroAccent] = useState<{ primary: string; secondary: string }>({
-    primary: 'rgba(99, 102, 241, 0.15)', // indigo
-    secondary: 'rgba(244, 63, 94, 0.12)', // rose
+    primary: 'rgba(122, 36, 43, 0.08)', // terracotta
+    secondary: 'rgba(194, 120, 48, 0.06)', // warm bronze
   });
 
   useEffect(() => {
@@ -22,8 +22,8 @@ export const BackgroundMesh: React.FC = () => {
     window.addEventListener('hero_color_changed', handleHeroColor);
 
     const handleMouseMove = (e: MouseEvent) => {
-      const x = (e.clientX / window.innerWidth - 0.5) * 25;
-      const y = (e.clientY / window.innerHeight - 0.5) * 25;
+      const x = (e.clientX / window.innerWidth - 0.5) * 20;
+      const y = (e.clientY / window.innerHeight - 0.5) * 20;
       setMousePos({ x, y });
     };
 
@@ -36,53 +36,34 @@ export const BackgroundMesh: React.FC = () => {
   }, []);
 
   return (
-    <div className="fixed inset-0 pointer-events-none -z-50 overflow-hidden bg-[#eef3f9] transition-colors duration-700">
-      {/* Soft Apple visionOS Living Room Reference Layer */}
-      <div
-        className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out opacity-45 scale-105"
-        style={{
-          backgroundImage: `url('/reference/vision_os_reference.jpg')`,
-          transform: `translate(${mousePos.x * -0.4}px, ${mousePos.y * -0.4}px) scale(1.05)`,
-          filter: 'blur(8px) brightness(1.08) saturate(1.1)',
-        }}
-      />
+    <div className="fixed inset-0 pointer-events-none -z-50 overflow-hidden bg-[#FAF6F0] transition-colors duration-1000 select-none">
+      {/* Subtle organic linen grain/paper gradient */}
+      <div className="absolute inset-0 bg-[radial-gradient(#E8DFD5_1px,transparent_1px)] [background-size:24px_24px] opacity-40" />
 
-      {/* Pearlescent White Frosted Overlay for Razor-Sharp Readability */}
-      <div className="absolute inset-0 bg-gradient-to-b from-white/75 via-white/60 to-white/80 backdrop-blur-[18px]" />
-
-      {/* Ambient Orb 1: Dynamic Top-Left Lilac / Indigo Aura */}
+      {/* Warm Ambient Orb 1: Terracotta Sunlit Halo */}
       <div
-        className="absolute -top-32 -left-32 w-[650px] h-[650px] rounded-full blur-[110px] animate-breathing-glow transition-all duration-1000"
+        className="absolute -top-24 -left-24 w-[600px] h-[600px] rounded-full blur-[120px] animate-breathing-glow transition-all duration-1000"
         style={{
           backgroundColor: heroAccent.primary,
-          transform: `translate(${mousePos.x * 1.1}px, ${mousePos.y * 1.1}px)`,
+          transform: `translate(${mousePos.x * 0.8}px, ${mousePos.y * 0.8}px)`,
         }}
       />
 
-      {/* Ambient Orb 2: Dynamic Top-Right Warm Peach / Rose Aurora */}
+      {/* Warm Ambient Orb 2: Champagne & Linen Glow (Top Right) */}
       <div
-        className="absolute top-1/4 -right-32 w-[700px] h-[700px] rounded-full blur-[130px] transition-all duration-1000"
+        className="absolute top-1/6 -right-24 w-[680px] h-[680px] rounded-full blur-[140px] transition-all duration-1000"
         style={{
           backgroundColor: heroAccent.secondary,
-          transform: `translate(${mousePos.x * -0.9}px, ${mousePos.y * -0.9}px)`,
-          animation: 'breathingGlow 10s ease-in-out infinite alternate',
+          transform: `translate(${mousePos.x * -0.6}px, ${mousePos.y * -0.6}px)`,
+          animation: 'warmBreathingGlow 14s ease-in-out infinite alternate',
         }}
       />
 
-      {/* Ambient Orb 3: Crystal Azure / Sky Bottom Flare */}
+      {/* Warm Ambient Orb 3: Soft Alabaster Bottom Bloom */}
       <div
-        className="absolute -bottom-36 left-1/4 w-[750px] h-[550px] rounded-full bg-sky-300/25 blur-[120px] transition-transform duration-1000"
+        className="absolute -bottom-32 left-1/3 w-[720px] h-[500px] rounded-full bg-amber-100/30 blur-[130px] transition-transform duration-1000"
         style={{
-          transform: `translate(${mousePos.x * 0.7}px, ${mousePos.y * 0.7}px)`,
-        }}
-      />
-
-      {/* Soft Specular Radial Sheen */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            'radial-gradient(ellipse at 50% 25%, rgba(255, 255, 255, 0.4) 0%, rgba(240, 244, 250, 0.25) 100%)',
+          transform: `translate(${mousePos.x * 0.5}px, ${mousePos.y * 0.5}px)`,
         }}
       />
     </div>

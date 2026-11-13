@@ -59,7 +59,6 @@ export default function PlaylistPage() {
     setPlaylist((prev) => prev.filter((item) => item.movieId !== movieId));
   };
 
-  // Filtered & Sorted items
   const filteredPlaylist = useMemo(() => {
     let list = [...playlist];
     if (activeTab === 'movies') {
@@ -91,210 +90,149 @@ export default function PlaylistPage() {
   return (
     <div className="w-full space-y-6 pb-12 select-none">
       {/* Header Banner */}
-      <div className="p-6 sm:p-8 rounded-[2.5rem] liquid-glass-panel border-2 border-white shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-5 bg-white/90 backdrop-blur-3xl text-slate-900">
-        <div className="space-y-1">
-          <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center text-white shadow-lg">
+      <div className="p-6 sm:p-9 rounded-3xl sm:rounded-[2.4rem] bg-[#FFFDFB] border border-[#E5DDD2] shadow-sm flex flex-col md:flex-row items-start md:items-center justify-between gap-5 text-[#231215]">
+        <div className="space-y-1.5">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-[#7A242B] flex items-center justify-center text-white shadow-xs">
               <BookmarkCheck className="w-5 h-5 text-white" />
             </div>
-            <h1 className="text-xl sm:text-3xl font-black text-slate-900 tracking-tight">
-              My Cinema Watchlist &amp; Vault
+            <h1 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#231215] tracking-tight">
+              My Curated Watchlist &amp; Vault
             </h1>
           </div>
-          <p className="text-xs sm:text-sm text-slate-600 font-normal">
-            Your personal library of bookmarked movies, active series, and saved cinema history.
+          <p className="text-xs sm:text-sm text-[#6E5558] font-normal">
+            Your private bookmarked screenings, auteur collections, and saved chronicles.
           </p>
         </div>
 
-        {/* Tab switch pills */}
-        <div className="flex items-center gap-1.5 p-1.5 rounded-2xl bg-slate-100/90 border border-slate-200/80 backdrop-blur-md overflow-x-auto max-w-full">
-          <button
-            onClick={() => {
-              playGlassClick();
-              setActiveTab('watchlist');
-            }}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition whitespace-nowrap ${
-              activeTab === 'watchlist'
-                ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/25'
-                : 'text-slate-600 hover:text-slate-950'
-            }`}
-          >
-            All Saved ({playlist.length})
-          </button>
-          <button
-            onClick={() => {
-              playGlassClick();
-              setActiveTab('movies');
-            }}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition whitespace-nowrap ${
-              activeTab === 'movies'
-                ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/25'
-                : 'text-slate-600 hover:text-slate-950'
-            }`}
-          >
-            Movies
-          </button>
-          <button
-            onClick={() => {
-              playGlassClick();
-              setActiveTab('tv');
-            }}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition whitespace-nowrap ${
-              activeTab === 'tv'
-                ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/25'
-                : 'text-slate-600 hover:text-slate-950'
-            }`}
-          >
-            Series
-          </button>
-          <button
-            onClick={() => {
-              playGlassClick();
-              setActiveTab('history');
-            }}
-            className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition whitespace-nowrap ${
-              activeTab === 'history'
-                ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/25'
-                : 'text-slate-600 hover:text-slate-950'
-            }`}
-          >
-            History ({continueWatching.length})
-          </button>
+        {/* Live Filter Search */}
+        <div className="w-full sm:w-80 relative flex items-center">
+          <Search className="w-4 h-4 text-[#7A242B] absolute left-3.5 pointer-events-none" />
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search saved titles..."
+            className="w-full pl-10 pr-4 py-2.5 rounded-full bg-[#FAF7F2] hover:bg-[#FAF6F0] focus:bg-[#FFFDFB] border border-[#E5DDD2] focus:border-[#7A242B] text-[#231215] placeholder:text-[#9E8B8E] text-xs sm:text-sm focus:outline-none transition shadow-xs"
+          />
         </div>
       </div>
 
-      {/* Filter & Search Toolbar (When not viewing history) */}
-      {activeTab !== 'history' && (
-        <div className="p-3.5 rounded-2xl liquid-glass-panel border-2 border-white flex flex-wrap items-center justify-between gap-3 text-xs bg-white/85 backdrop-blur-2xl text-slate-800 shadow-md">
-          <div className="flex items-center gap-2 w-full sm:w-64 relative">
-            <Search className="w-3.5 h-3.5 text-indigo-600 absolute left-3 pointer-events-none" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search in watchlist..."
-              className="w-full pl-8 pr-3 py-1.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder:text-slate-400 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
-            />
-          </div>
+      {/* Tabs Switcher & Sort Toolbar */}
+      <div className="flex flex-wrap items-center justify-between gap-3 p-3 rounded-2xl bg-[#FFFDFB] border border-[#E5DDD2]">
+        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
+          {[
+            { id: 'watchlist', label: `All Saved (${playlist.length})` },
+            { id: 'movies', label: 'Feature Films' },
+            { id: 'tv', label: 'TV Chronicles' },
+            { id: 'history', label: `Screening History (${continueWatching.length})` },
+          ].map((tab) => {
+            const isActive = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => {
+                  playGlassClick();
+                  setActiveTab(tab.id as any);
+                }}
+                className={`px-4 py-1.5 rounded-full text-xs font-medium transition whitespace-nowrap border ${
+                  isActive
+                    ? 'bg-[#7A242B] border-[#7A242B] text-white'
+                    : 'bg-[#FAF7F2] hover:bg-[#FAF6F0] border-[#E5DDD2] text-[#54383B]'
+                }`}
+              >
+                {tab.label}
+              </button>
+            );
+          })}
+        </div>
 
-          <div className="flex items-center gap-2 ml-auto">
-            <SlidersHorizontal className="w-3.5 h-3.5 text-indigo-600" />
-            <span className="text-slate-600 font-bold">Sort:</span>
+        {activeTab !== 'history' && (
+          <div className="flex items-center gap-1.5 ml-auto text-xs">
+            <SlidersHorizontal className="w-3.5 h-3.5 text-[#7A242B]" />
             <select
               value={selectedSort}
               onChange={(e) => setSelectedSort(e.target.value as any)}
-              className="bg-white border border-slate-200 text-slate-900 font-semibold rounded-xl px-2.5 py-1 text-xs outline-none cursor-pointer shadow-2xs"
+              className="bg-[#FAF7F2] border border-[#E5DDD2] text-[#231215] font-medium rounded-xl px-2.5 py-1 text-xs outline-none cursor-pointer"
             >
-              <option value="newest">Recently Added</option>
+              <option value="newest">Recently Bookmarked</option>
               <option value="rating">Highest Rated</option>
-              <option value="title">Alphabetical</option>
+              <option value="title">Alphabetical (A-Z)</option>
             </select>
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
       {/* Watchlist Grid */}
-      {activeTab !== 'history' && (
-        <div>
-          {filteredPlaylist.length === 0 ? (
-            <div className="py-24 text-center space-y-4 bg-white/80 rounded-[2.5rem] border-2 border-white shadow-lg p-8">
-              <div className="w-16 h-16 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center mx-auto text-slate-400">
-                <BookmarkCheck className="w-8 h-8" />
+      {activeTab !== 'history' ? (
+        filteredPlaylist.length === 0 ? (
+          <div className="py-24 text-center text-[#786164] font-serif text-sm space-y-3">
+            <p>Your curated screening list is empty.</p>
+            <Link
+              href="/movies"
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full btn-terracotta text-xs font-medium"
+            >
+              <span>Explore Films</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-5">
+            {filteredPlaylist.map((item) => (
+              <div key={item.movieId} className="relative group">
+                <MovieCard
+                  movie={item.movie}
+                  onOpenDetails={(m) => setSelectedMovie(m)}
+                />
+                {/* Quick Delete From List Button */}
+                <button
+                  onClick={(e) => handleRemove(item.movieId, e)}
+                  aria-label="Remove from list"
+                  className="absolute top-3 right-3 p-1.5 rounded-full bg-black/60 hover:bg-[#7A242B] text-white opacity-0 group-hover:opacity-100 transition shadow-md z-20"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                </button>
               </div>
-              <h3 className="text-base font-bold text-slate-900">Your Watchlist is Empty</h3>
-              <p className="text-xs text-slate-500 max-w-sm mx-auto">
-                Explore movies and click &quot;Add to Watchlist&quot; or the &quot;+&quot; icon to save titles for later streaming.
-              </p>
+            ))}
+          </div>
+        )
+      ) : (
+        /* History Grid */
+        continueWatching.length === 0 ? (
+          <div className="py-24 text-center text-[#786164] font-serif text-sm">
+            No recent screening history found.
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {continueWatching.map((item) => (
               <Link
-                href="/explore"
-                onClick={playGlassClick}
-                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-2xl bg-indigo-600 text-white font-bold text-xs hover:bg-indigo-700 transition shadow-md shadow-indigo-600/25"
+                key={item.id}
+                href={`/watch/${item.id}`}
+                className="p-3.5 rounded-2xl bg-[#FFFDFB] hover:bg-[#FAF6F0] border border-[#E5DDD2] shadow-xs hover:shadow-md transition flex items-center gap-3.5 group"
               >
-                <span>Explore Catalog</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </Link>
-            </div>
-          ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-5">
-              {filteredPlaylist.map((item) => (
-                <div key={item.movieId} className="relative group/card">
-                  <MovieCard
-                    movie={item.movie}
-                    onOpenDetails={(m) => setSelectedMovie(m)}
-                  />
-                  {/* Remove Button on Hover */}
-                  <button
-                    onClick={(e) => handleRemove(item.movieId, e)}
-                    className="absolute top-3.5 right-3.5 z-20 p-2 rounded-full bg-rose-600 hover:bg-rose-700 text-white opacity-0 group-hover/card:opacity-100 transition shadow-lg backdrop-blur-md"
-                    title="Remove from watchlist"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </button>
+                <img
+                  src={item.thumbnailUrl}
+                  alt={item.title}
+                  className="w-20 h-14 object-cover rounded-xl shrink-0 border border-[#E5DDD2]"
+                />
+                <div className="min-w-0 flex-1 space-y-1">
+                  <h3 className="font-serif text-sm font-bold text-[#231215] truncate group-hover:text-[#7A242B] transition-colors">
+                    {item.title}
+                  </h3>
+                  <p className="text-xs text-[#7A6165] tabular-nums">
+                    {item.remainingTimeText || 'Resume screening'}
+                  </p>
                 </div>
-              ))}
-            </div>
-          )}
-        </div>
+                <div className="w-8 h-8 rounded-full bg-[#FAF7F2] group-hover:bg-[#7A242B] text-[#54383B] group-hover:text-white flex items-center justify-center transition shrink-0">
+                  <Play className="w-3.5 h-3.5 fill-current ml-0.5" />
+                </div>
+              </Link>
+            ))}
+          </div>
+        )
       )}
 
-      {/* History Tab */}
-      {activeTab === 'history' && (
-        <div className="space-y-4">
-          {continueWatching.length === 0 ? (
-            <div className="py-24 text-center text-slate-500 text-xs font-semibold bg-white/80 rounded-[2.5rem] border-2 border-white shadow-lg p-8">
-              No watch history yet. Start streaming any movie to track your playback progress.
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {continueWatching.map((item) => {
-                const percent =
-                  item.durationSeconds > 0
-                    ? Math.round((item.progressSeconds / item.durationSeconds) * 100)
-                    : 50;
-
-                return (
-                  <Link
-                    key={item.id}
-                    href={`/watch/${item.id}`}
-                    onClick={playGlassClick}
-                    onMouseEnter={playGlassHover}
-                    className="flex items-center gap-4 p-4 rounded-3xl bg-white/85 hover:bg-white border-2 border-white transition group shadow-md backdrop-blur-xl"
-                  >
-                    <div className="relative w-18 h-18 rounded-2xl overflow-hidden shrink-0 border border-slate-200 shadow-sm">
-                      <img
-                        src={item.thumbnailUrl}
-                        alt={item.title}
-                        className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500"
-                      />
-                      <div className="absolute inset-0 bg-slate-900/30 flex items-center justify-center">
-                        <Play className="w-5 h-5 text-white fill-white" />
-                      </div>
-                    </div>
-
-                    <div className="min-w-0 flex-1 space-y-1.5">
-                      <h4 className="text-xs sm:text-sm font-bold text-slate-900 truncate group-hover:text-indigo-600 transition-colors">
-                        {item.title}
-                      </h4>
-                      <p className="text-[11px] text-slate-500 font-medium tabular-nums">
-                        {item.episodeText || `Left off: ${item.remainingTimeText}`}
-                      </p>
-                      {/* Mini glowing progress bar */}
-                      <div className="w-full h-1.5 bg-slate-200 rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-sky-400 shadow-xs"
-                          style={{ width: `${percent}%` }}
-                        />
-                      </div>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Interactive Movie Details Modal */}
+      {/* Interactive Details Modal */}
       <MovieDetailsModal
         movie={selectedMovie}
         isOpen={selectedMovie !== null}

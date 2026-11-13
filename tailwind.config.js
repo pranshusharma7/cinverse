@@ -7,9 +7,29 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        serif: ['"Playfair Display"', 'Cormorant Garamond', 'Georgia', 'Cambria', 'serif'],
+        sans: ['"Plus Jakarta Sans"', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+        display: ['"Playfair Display"', 'Georgia', 'serif'],
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        editorial: {
+          terracotta: "#7A242B",
+          "terracotta-hover": "#641C22",
+          "terracotta-dark": "#4D1419",
+          "terracotta-light": "#A13840",
+          cream: "#FAF7F2",
+          parchment: "#F4ECE1",
+          linen: "#EFE7DC",
+          sand: "#E5DCD0",
+          border: "#E4DBD0",
+          ink: "#231215",
+          espresso: "#301A1E",
+          muted: "#7B6265",
+          gold: "#C27803",
+        },
         glass: {
           50: "rgba(255, 255, 255, 0.05)",
           100: "rgba(255, 255, 255, 0.08)",
@@ -23,12 +43,15 @@ module.exports = {
           highlight: "rgba(255, 255, 255, 0.25)",
         },
         brand: {
+          terracotta: "#7A242B",
+          burgundy: "#5E1B21",
+          espresso: "#2B1417",
           blue: "#38bdf8",
           purple: "#a855f7",
           lavender: "#c084fc",
           indigo: "#6366f1",
           cyan: "#06b6d4",
-          accent: "#ec4899",
+          accent: "#7A242B",
         },
       },
       backdropBlur: {
@@ -38,12 +61,14 @@ module.exports = {
         '4xl': "40px",
       },
       boxShadow: {
+        'editorial-sm': "0 2px 8px -1px rgba(50, 20, 25, 0.05)",
+        'editorial-md': "0 10px 25px -4px rgba(50, 20, 25, 0.08), 0 2px 6px -1px rgba(50, 20, 25, 0.04)",
+        'editorial-lg': "0 20px 40px -8px rgba(50, 20, 25, 0.12), 0 4px 12px -2px rgba(50, 20, 25, 0.06)",
         'glass-sm': "0 4px 16px 0 rgba(0, 0, 0, 0.25)",
         'glass-md': "0 8px 32px 0 rgba(0, 0, 0, 0.37)",
         'glass-lg': "0 12px 48px 0 rgba(0, 0, 0, 0.45)",
-        'glass-glow': "0 0 25px rgba(168, 85, 247, 0.25), 0 0 50px rgba(56, 189, 248, 0.15)",
-        'glass-glow-blue': "0 0 30px rgba(56, 189, 248, 0.35)",
-        'glass-inner': "inset 0 1px 1px 0 rgba(255, 255, 255, 0.2)",
+        'glass-glow': "0 0 25px rgba(122, 36, 43, 0.18), 0 0 50px rgba(161, 56, 64, 0.12)",
+        'glass-inner': "inset 0 1px 1px 0 rgba(255, 255, 255, 0.4)",
       },
       animation: {
         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
@@ -64,4 +89,3 @@ module.exports = {
   },
   plugins: [],
 };
-

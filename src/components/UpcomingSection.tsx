@@ -13,9 +13,8 @@ interface UpcomingSectionProps {
   onOpenDetails?: (movie: Movie) => void;
 }
 
-// Helper to compute a realistic countdown string from a date string or release year
 function getReleaseCountdown(dateStr?: string, year?: number): string {
-  if (!dateStr && !year) return 'Coming Soon';
+  if (!dateStr && !year) return 'Premiering Soon';
   if (dateStr) {
     const target = new Date(dateStr);
     if (!isNaN(target.getTime())) {
@@ -30,7 +29,7 @@ function getReleaseCountdown(dateStr?: string, year?: number): string {
       }
     }
   }
-  return year ? `In ${year}` : 'Coming Soon';
+  return year ? `Season ${year}` : 'Premiering Soon';
 }
 
 export const UpcomingSection: React.FC<UpcomingSectionProps> = ({ movies, onOpenDetails }) => {
@@ -44,21 +43,21 @@ export const UpcomingSection: React.FC<UpcomingSectionProps> = ({ movies, onOpen
       {/* Section Header */}
       <div className="flex items-center justify-between mb-3 px-1">
         <div className="flex items-center gap-2">
-          <Sparkles className="w-4 h-4 text-indigo-600" />
-          <h2 className="text-sm font-extrabold text-slate-900 tracking-wide">
-            Upcoming Trailers
+          <Sparkles className="w-4 h-4 text-[#7A242B]" />
+          <h2 className="font-serif text-base sm:text-lg font-bold text-[#231215] tracking-tight">
+            Upcoming Salon Premieres
           </h2>
         </div>
         <Link
           href="/movies?category=upcoming"
           onClick={playGlassClick}
-          className="text-xs font-bold text-indigo-600 hover:text-indigo-800 transition"
+          className="text-xs font-semibold text-[#7A242B] hover:text-[#56171D] transition"
         >
-          View all
+          View Archive
         </Link>
       </div>
 
-      {/* Two Stacked Vertical Glass Cards */}
+      {/* Two Stacked Artisanal Editorial Cards */}
       <div className="flex flex-col gap-3.5 flex-1 justify-between">
         {upcomingList.map((movie) => {
           const countdownText = getReleaseCountdown(movie.releaseDate, movie.releaseYear);
@@ -66,7 +65,7 @@ export const UpcomingSection: React.FC<UpcomingSectionProps> = ({ movies, onOpen
           return (
             <motion.div
               key={movie.id}
-              whileHover={{ y: -3 }}
+              whileHover={{ y: -2 }}
               transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
               onClick={() => {
                 playGlassClick();
@@ -77,63 +76,50 @@ export const UpcomingSection: React.FC<UpcomingSectionProps> = ({ movies, onOpen
                 }
               }}
               onMouseEnter={playGlassHover}
-              className="group relative flex-1 min-h-[200px] rounded-[2rem] overflow-hidden border border-white/90 hover:border-white transition-all duration-300 shadow-md hover:shadow-xl cursor-pointer block liquid-gloss bg-white/40 backdrop-blur-md"
+              className="group relative flex-1 min-h-[190px] rounded-3xl overflow-hidden border border-[#E5DDD2] hover:border-[#D6CBC0] transition-all duration-300 shadow-sm hover:shadow-md cursor-pointer block bg-[#FFFDFB]"
             >
-              {/* Landscape Backdrop Artwork with hover zoom preview */}
+              {/* Backdrop Artwork */}
               <div
-                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-108"
+                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-105"
                 style={{
                   backgroundImage: `url(${movie.backdropUrl || movie.posterUrl})`,
                 }}
               />
 
-              {/* Multi-stop VisionOS gradient vignette */}
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/45 to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-r from-slate-950/75 via-transparent to-transparent" />
+              {/* Editorial Gradient */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#231215]/90 via-[#231215]/40 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#231215]/75 via-transparent to-transparent" />
 
               {/* Top Countdown Badge */}
               <div className="relative z-10 p-4 flex items-center justify-between">
-                <span className="px-3 py-1 rounded-full bg-indigo-600/90 text-white border border-indigo-400 text-[11px] font-bold backdrop-blur-xl shadow-md flex items-center gap-1.5 tabular-nums">
+                <span className="px-3 py-1 rounded-full bg-[#7A242B]/90 text-white border border-white/20 text-[11px] font-medium backdrop-blur-md shadow-xs flex items-center gap-1.5 tabular-nums">
                   <Clock className="w-3 h-3 text-white" />
                   <span>{countdownText}</span>
                 </span>
 
                 {movie.genres?.[0] && (
-                  <span className="px-2.5 py-0.5 rounded-full bg-white/20 text-white text-[10px] font-bold border border-white/30 backdrop-blur-md">
+                  <span className="px-2.5 py-0.5 rounded-full bg-black/40 backdrop-blur-md text-[10px] font-medium text-white/90 border border-white/20">
                     {movie.genres[0]}
                   </span>
                 )}
               </div>
 
-              {/* Bottom Info & Magnetic Play Button */}
-              <div className="relative z-10 w-full p-4 mt-auto flex items-end justify-between gap-3">
-                <div className="space-y-1 max-w-[75%]">
-                  <h3 className="text-xs sm:text-sm font-extrabold text-white leading-snug drop-shadow-sm group-hover:text-indigo-200 transition-colors line-clamp-1">
+              {/* Bottom Info & Play Trailer Trigger */}
+              <div className="relative z-10 p-4 flex items-end justify-between mt-auto">
+                <div className="space-y-1 max-w-[70%]">
+                  <h3 className="font-serif text-sm sm:text-base font-bold text-white leading-tight group-hover:text-amber-200 transition-colors">
                     {movie.title}
                   </h3>
-                  {movie.releaseDate && (
-                    <div className="flex items-center gap-1.5 text-[11px] text-white/90 font-medium">
-                      <Calendar className="w-3 h-3 text-indigo-300" />
-                      <span>{movie.releaseDate}</span>
-                    </div>
-                  )}
+                  <div className="flex items-center gap-2 text-[11px] text-white/80">
+                    <Calendar className="w-3 h-3 text-amber-300" />
+                    <span>{movie.releaseDate || movie.releaseYear || 'Coming Soon'}</span>
+                  </div>
                 </div>
 
-                {/* Magnetic Circular Play Button */}
-                <motion.button
-                  whileHover={{ scale: 1.18 }}
-                  whileTap={{ scale: 0.92 }}
-                  transition={{ type: 'spring', stiffness: 400, damping: 20 }}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    playGlassClick();
-                    router.push(`/watch/${movie.id}`);
-                  }}
-                  aria-label={`Play trailer for ${movie.title}`}
-                  className="w-10 h-10 rounded-full bg-white text-slate-950 flex items-center justify-center backdrop-blur-xl border border-white shadow-lg shrink-0"
-                >
-                  <Play className="w-4 h-4 fill-slate-950 ml-0.5" />
-                </motion.button>
+                {/* Magnetic Play Trailer Button */}
+                <div className="w-10 h-10 rounded-full bg-white text-[#231215] flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-[#7A242B] group-hover:text-white transition-all duration-300">
+                  <Play className="w-4 h-4 fill-current ml-0.5" />
+                </div>
               </div>
             </motion.div>
           );
