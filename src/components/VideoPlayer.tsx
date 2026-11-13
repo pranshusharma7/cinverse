@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import {
   Maximize,
   Minimize,
@@ -37,9 +37,29 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   onEpisodeChange,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const controlsTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isTheatreMode, setIsTheatreMode] = useState(false);
   const [iframeLoaded, setIframeLoaded] = useState(false);
+  const [showControls, setShowControls] = useState(true);
+
+  // Auto-hide controls after inactivity on both mobile touch and desktop
+  const triggerControlsVisibility = useCallback(() => {
+    setShowControls(true);
+    if (controlsTimeoutRef.current) {
+      clearTimeout(controlsTimeoutRef.current);
+    }
+    controlsTimeoutRef.current = setTimeout(() => {
+      setShowControls(false);
+    }, 3800);
+  }, []);
+
+  useEffect(() => {
+    triggerControlsVisibility();
+    return () => {
+      if (controlsTimeoutRef.current) clearTimeout(controlsTimeoutRef.current);
+    };
+  }, [triggerControlsVisibility]);
 
   // Compute verified TMDB ID
   const effectiveId = movie.tmdbId || (/^\d+$/.test(movie.id) ? movie.id : 550);
@@ -69,6 +89,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   // Reset iframe loading state when episode changes
   useEffect(() => {
     setIframeLoaded(false);
+    setShowControls(true);
   }, [season, episode, movie.id]);
 
   const toggleFullscreen = () => {
@@ -89,37 +110,45 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
   return (
     <div
       ref={containerRef}
-      className={`relative rounded-3xl overflow-hidden bg-black border-2 border-white shadow-2xl transition-all duration-500 group select-none flex flex-col ${
-        isTheatreMode ? 'w-full aspect-[21/9] max-h-[88vh]' : 'w-full aspect-video'
+      onMouseMove={triggerControlsVisibility}
+      onTouchStart={triggerControlsVisibility}
+      onClick={triggerControlsVisibility}
+      className={`relative w-full rounded-2xl sm:rounded-3xl overflow-hidden bg-black border border-white/10 sm:border-white/20 shadow-2xl transition-all duration-500 group select-none flex flex-col ${
+        isTheatreMode ? 'sm:aspect-[21/9] sm:max-h-[88vh] aspect-video' : 'aspect-video'
       }`}
     >
-      {/* Top Floating Liquid Glass Player Bar */}
-      <div className="absolute top-4 left-4 right-4 z-30 flex items-center justify-between pointer-events-none flex-wrap gap-2">
+      {/* Top Floating Player Bar (Compact & Auto-Hiding on Mobile) */}
+      <div
+        className={`absolute top-2 left-2 right-2 sm:top-3.5 sm:left-4 sm:right-4 z-30 flex items-center justify-between gap-2 pointer-events-none transition-opacity duration-300 ${
+          showControls ? 'opacity-100' : 'opacity-0'
+        }`}
+      >
         {/* Left Title Badge */}
-        <div className="flex items-center gap-2.5 pointer-events-auto bg-black/60 backdrop-blur-xl px-4 py-1.5 rounded-full border border-white/20 text-white shadow-lg">
-          <Film className="w-4 h-4 text-indigo-400" />
-          <span className="text-xs font-bold truncate max-w-[180px] sm:max-w-md">
+        <div className="flex items-center gap-1.5 sm:gap-2 pointer-events-auto bg-black/75 backdrop-blur-md px-2.5 sm:px-4 py-1 sm:py-1.5 rounded-full border border-white/20 text-white shadow-lg min-w-0 max-w-[62%] sm:max-w-md">
+          <Film className="w-3.5 h-3.5 text-[#C27803] shrink-0" />
+          <span className="text-[11px] sm:text-xs font-semibold truncate text-white">
             {movie.title}
           </span>
           {movie.type === 'tv' && (
-            <span className="text-[10px] bg-indigo-500/80 px-2 py-0.5 rounded-full font-bold">
+            <span className="text-[9px] sm:text-[10px] bg-[#7A242B] px-1.5 py-0.2 rounded-full font-bold shrink-0">
               S{season} E{episode}
             </span>
           )}
         </div>
 
         {/* Right Controls */}
-        <div className="flex items-center gap-2 pointer-events-auto">
-          {/* Active Server Badge (nxsha.space) */}
-          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-xl border border-white/20 text-white text-[11px] font-bold shadow-lg">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span>nxsha.space</span>
+        <div className="flex items-center gap-1.5 sm:gap-2 pointer-events-auto shrink-0">
+          {/* Active Server Badge (nxsha.space HD) */}
+          <div className="flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full bg-black/75 backdrop-blur-md border border-white/20 text-white text-[10px] sm:text-[11px] font-medium shadow-lg">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="hidden xs:inline">nxsha</span>
+            <span className="xs:hidden">HD</span>
           </div>
 
-          {/* Theatre Mode */}
+          {/* Theatre Mode (Only on larger screens) */}
           <button
             onClick={toggleTheatre}
-            className="p-2 rounded-full bg-black/60 hover:bg-black/90 text-white border border-white/20 backdrop-blur-xl transition shadow-lg"
+            className="hidden sm:flex p-2 rounded-full bg-black/75 hover:bg-black text-white border border-white/20 backdrop-blur-md transition shadow-lg active:scale-90"
             title="Theatre Mode (T)"
           >
             <Tv className="w-4 h-4" />
@@ -128,7 +157,7 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
           {/* Fullscreen Button */}
           <button
             onClick={toggleFullscreen}
-            className="p-2 rounded-full bg-black/60 hover:bg-black/90 text-white border border-white/20 backdrop-blur-xl transition shadow-lg"
+            className="p-1.5 sm:p-2 rounded-full bg-black/75 hover:bg-black text-white border border-white/20 backdrop-blur-md transition shadow-lg active:scale-90"
             title="Toggle Fullscreen"
           >
             {isFullscreen ? <Minimize className="w-4 h-4" /> : <Maximize className="w-4 h-4" />}
@@ -139,9 +168,9 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
       {/* Main Streaming Display (Direct nxsha.space Iframe Embed) */}
       <div className="relative w-full h-full flex-1 bg-black">
         {!iframeLoaded && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-slate-950 text-white z-10">
-            <div className="w-8 h-8 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin" />
-            <span className="text-xs font-semibold text-slate-400">
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 sm:gap-3 bg-slate-950 text-white z-10 px-4 text-center">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 border-2 border-[#7A242B] border-t-transparent rounded-full animate-spin" />
+            <span className="text-[11px] sm:text-xs font-medium text-slate-400">
               Connecting to nxsha.space stream...
             </span>
           </div>
@@ -153,15 +182,15 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
           title={`${movie.title} - Online Stream`}
           onLoad={() => setIframeLoaded(true)}
           className="w-full h-full border-none"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"
           allowFullScreen
         />
       </div>
 
-      {/* TV Series Episode Bar (If TV Series) */}
+      {/* TV Series Episode Bar (Touch-friendly on Mobile) */}
       {movie.type === 'tv' && (
-        <div className="p-3 bg-slate-950/90 border-t border-white/10 flex items-center gap-2 overflow-x-auto no-scrollbar z-20">
-          <span className="text-xs font-bold text-white px-2 shrink-0">Episodes:</span>
+        <div className="p-2 sm:p-3 bg-[#110B0D] border-t border-white/10 flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar z-20">
+          <span className="text-[11px] sm:text-xs font-bold text-white px-1 sm:px-2 shrink-0">Episodes:</span>
           {Array.from({ length: movie.episodes || 12 }).map((_, idx) => {
             const epNum = idx + 1;
             const isActive = episode === epNum;
@@ -171,9 +200,9 @@ export const VideoPlayer: React.FC<VideoPlayerProps> = ({
                 onClick={() => {
                   onEpisodeChange?.(season, epNum);
                 }}
-                className={`px-3 py-1 rounded-xl text-xs font-bold transition shrink-0 ${
+                className={`px-2.5 sm:px-3 py-1 rounded-lg sm:rounded-xl text-[11px] sm:text-xs font-semibold transition shrink-0 ${
                   isActive
-                    ? 'bg-indigo-600 text-white shadow-md'
+                    ? 'bg-[#7A242B] text-white shadow-xs'
                     : 'bg-white/10 text-white/70 hover:bg-white/20 hover:text-white'
                 }`}
               >

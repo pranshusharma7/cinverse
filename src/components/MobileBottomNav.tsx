@@ -14,6 +14,11 @@ interface MobileBottomNavProps {
 export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({ onOpenSearch }) => {
   const pathname = usePathname();
 
+  // Hide mobile bottom navigation bar on watch screening pages for immersive full-screen viewing
+  if (pathname.startsWith('/watch/')) {
+    return null;
+  }
+
   const navItems = [
     { label: 'Archive', href: '/', icon: Home },
     { label: 'Explore', href: '/explore', icon: Compass },
