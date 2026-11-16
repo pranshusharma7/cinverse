@@ -1,0 +1,1002 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Management | School Admin</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --primary: #4f46e5;
+    --primary-light: #eef2ff;
+    --bg: #f5f6fa;
+    --text: #182230;
+    --muted: #788396;
+    --border: #e9ecf2;
+    --white: #ffffff;
+    --green: #16a34a;
+    --red: #dc2626;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+}
+
+button, input, select {
+    font: inherit;
+}
+
+.app {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+    width: 250px;
+    background: #171b2e;
+    color: white;
+    padding: 28px 18px;
+    flex-shrink: 0;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 42px;
+}
+
+.logo span {
+    color: #818cf8;
+}
+
+.sidebar-label {
+    font-size: 11px;
+    color: #9299ad;
+    margin: 25px 12px 12px;
+    letter-spacing: 1.5px;
+}
+
+.nav-item {
+    display: block;
+    width: 100%;
+    padding: 13px 15px;
+    border: none;
+    border-radius: 9px;
+    background: transparent;
+    color: #b8bfd0;
+    text-align: left;
+    cursor: pointer;
+    margin-bottom: 7px;
+    font-size: 13px;
+}
+
+.nav-item.active,
+.nav-item:hover {
+    background: #303759;
+    color: white;
+}
+
+.sidebar-footer {
+    margin-top: 80px;
+    padding: 15px;
+    background: #242a43;
+    border-radius: 12px;
+    font-size: 12px;
+    color: #c4cbe0;
+    line-height: 1.8;
+}
+
+/* MAIN */
+
+.main {
+    flex: 1;
+    min-width: 0;
+}
+
+.topbar {
+    height: 75px;
+    background: white;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 35px;
+}
+
+.topbar h3 {
+    font-size: 15px;
+}
+
+.admin {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.avatar {
+    width: 37px;
+    height: 37px;
+    background: var(--primary-light);
+    color: var(--primary);
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    font-weight: 800;
+}
+
+.content {
+    padding: 35px;
+    max-width: 1500px;
+    margin: auto;
+}
+
+.heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 28px;
+}
+
+.heading h1 {
+    font-size: 27px;
+    margin-bottom: 8px;
+}
+
+.heading p {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+.btn {
+    border: none;
+    padding: 12px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 700;
+    transition: .2s;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #3730a3;
+    transform: translateY(-1px);
+}
+
+.btn-light {
+    background: #f1f2f6;
+    color: #414b60;
+}
+
+/* STATS */
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 27px;
+}
+
+.stat-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    padding: 22px;
+}
+
+.stat-top {
+    display: flex;
+    justify-content: space-between;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.stat-icon {
+    width: 39px;
+    height: 39px;
+    background: var(--primary-light);
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    font-size: 19px;
+}
+
+.stat-card h2 {
+    font-size: 29px;
+    margin-top: 15px;
+}
+
+.stat-card small {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+/* TABLE */
+
+.panel {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    overflow: hidden;
+}
+
+.panel-header {
+    padding: 23px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.panel-header h3 {
+    font-size: 15px;
+}
+
+.search {
+    width: 250px;
+    max-width: 100%;
+    padding: 11px 13px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    outline: none;
+    font-size: 12px;
+}
+
+.search:focus,
+input:focus,
+select:focus {
+    border-color: var(--primary);
+}
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 650px;
+}
+
+th {
+    background: #f9fafc;
+    color: var(--muted);
+    text-align: left;
+    font-size: 11px;
+    padding: 16px 22px;
+    font-weight: 600;
+}
+
+td {
+    padding: 17px 22px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+}
+
+.student-name {
+    font-weight: 700;
+}
+
+.badge {
+    background: #eef2ff;
+    color: #4f46e5;
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 10px;
+}
+
+.actions {
+    display: flex;
+    gap: 8px;
+}
+
+.action-btn {
+    border: none;
+    padding: 7px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.edit {
+    color: #4f46e5;
+    background: #eef2ff;
+}
+
+.delete {
+    color: #dc2626;
+    background: #fef2f2;
+}
+
+.empty {
+    text-align: center;
+    padding: 40px;
+    color: var(--muted);
+}
+
+/* MODAL */
+
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, .55);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 10;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-box {
+    background: white;
+    width: 100%;
+    max-width: 450px;
+    border-radius: 15px;
+    padding: 28px;
+    animation: appear .2s ease;
+}
+
+@keyframes appear {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.modal-header h2 {
+    font-size: 19px;
+}
+
+.close {
+    border: none;
+    background: none;
+    font-size: 23px;
+    cursor: pointer;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    outline: none;
+    font-size: 13px;
+    background: white;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+.message {
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    margin-bottom: 15px;
+    display: none;
+}
+
+.message.success {
+    display: block;
+    background: #dcfce7;
+    color: #166534;
+}
+
+.message.error {
+    display: block;
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.connection {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 18px;
+}
+
+.dot {
+    display: inline-block;
+    height: 8px;
+    width: 8px;
+    border-radius: 50%;
+    background: #16a34a;
+    margin-right: 6px;
+}
+
+@media(max-width: 800px) {
+    .sidebar {
+        width: 70px;
+        padding: 20px 8px;
+    }
+
+    .logo {
+        font-size: 14px;
+        text-align: center;
+    }
+
+    .sidebar-label,
+    .sidebar-footer,
+    .nav-text {
+        display: none;
+    }
+
+    .nav-item {
+        text-align: center;
+        padding: 15px 5px;
+    }
+
+    .content {
+        padding: 20px 14px;
+    }
+
+    .topbar {
+        padding: 0 15px;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+        <div class="logo">Edu<span>Manage.</span></div>
+
+        <div class="sidebar-label">MAIN MENU</div>
+
+        <button class="nav-item active">
+            📊 <span class="nav-text">Dashboard</span>
+        </button>
+
+        <button class="nav-item">
+            👨‍🎓 <span class="nav-text">Students</span>
+        </button>
+
+        <button class="nav-item">
+            📚 <span class="nav-text">Classes</span>
+        </button>
+
+        <button class="nav-item">
+            👨‍🏫 <span class="nav-text">Staff</span>
+        </button>
+
+        <div class="sidebar-label">SYSTEM</div>
+
+        <button class="nav-item">
+            ⚙️ <span class="nav-text">Settings</span>
+        </button>
+
+        <div class="sidebar-footer">
+            <strong>School Admin</strong><br>
+            Student Management System
+        </div>
+
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+
+        <header class="topbar">
+
+            <h3>Student Management</h3>
+
+            <div class="admin">
+                <div class="avatar">A</div>
+                <span>Administrator</span>
+            </div>
+
+        </header>
+
+        <section class="content">
+
+            <div class="heading">
+                <div>
+                    <h1>Student Records</h1>
+                    <p>Manage and organize your school's student information.</p>
+                </div>
+
+                <button class="btn btn-primary" onclick="openModal()">
+                    + Add New Student
+                </button>
+            </div>
+
+            <div id="message" class="message"></div>
+
+            <!-- STATISTICS -->
+            <div class="stats">
+
+                <div class="stat-card">
+                    <div class="stat-top">
+                        Total Students
+                        <div class="stat-icon">👨‍🎓</div>
+                    </div>
+                    <h2 id="totalStudents">0</h2>
+                    <small>Registered student records</small>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-top">
+                        Total Classes
+                        <div class="stat-icon">📚</div>
+                    </div>
+                    <h2 id="totalClasses">0</h2>
+                    <small>Unique classes represented</small>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-top">
+                        Database Status
+                        <div class="stat-icon">🗄️</div>
+                    </div>
+                    <h2 style="font-size:19px" id="dbStatus">Checking</h2>
+                    <small>MongoDB API connection</small>
+                </div>
+
+            </div>
+
+            <!-- STUDENT TABLE -->
+            <div class="panel">
+
+                <div class="panel-header">
+                    <h3>All Students</h3>
+
+                    <input
+                        type="search"
+                        class="search"
+                        id="searchInput"
+                        placeholder="Search name, class or roll no..."
+                        oninput="renderStudents()"
+                    >
+                </div>
+
+                <div class="table-wrap">
+
+                    <table>
+
+                        <thead>
+                            <tr>
+                                <th>STUDENT NAME</th>
+                                <th>CLASS</th>
+                                <th>ROLL NUMBER</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="studentTable">
+                            <tr>
+                                <td colspan="4" class="empty">
+                                    Loading student records...
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+            <div class="connection">
+                <span class="dot"></span>
+                Student Management Dashboard
+            </div>
+
+        </section>
+
+    </main>
+
+</div>
+
+<!-- ADD / EDIT MODAL -->
+<div class="modal" id="studentModal">
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+            <h2 id="modalTitle">Add New Student</h2>
+            <button class="close" onclick="closeModal()">×</button>
+        </div>
+
+        <form id="studentForm">
+
+            <input type="hidden" id="studentId">
+
+            <div class="form-group">
+                <label>Student Name</label>
+                <input
+                    type="text"
+                    id="studentName"
+                    placeholder="Enter full name"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label>Class</label>
+                <select id="studentClass" required>
+                    <option value="">Select class</option>
+                    <option>Class 6</option>
+                    <option>Class 7</option>
+                    <option>Class 8</option>
+                    <option>Class 9</option>
+                    <option>Class 10</option>
+                    <option>Class 11</option>
+                    <option>Class 12</option>
+                    <option>B.Tech CSE</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Roll Number</label>
+                <input
+                    type="text"
+                    id="rollNumber"
+                    placeholder="Enter roll number"
+                    required
+                >
+            </div>
+
+            <div class="modal-actions">
+
+                <button
+                    type="button"
+                    class="btn btn-light"
+                    onclick="closeModal()"
+                >
+                    Cancel
+                </button>
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                    id="saveButton"
+                >
+                    Save Student
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script>
+
+// MongoDB backend API
+const API_URL = "/api/students";
+
+let students = [];
+
+// Show message
+function showMessage(text, type) {
+    const message = document.getElementById("message");
+
+    message.textContent = text;
+    message.className = "message " + type;
+
+    setTimeout(() => {
+        message.className = "message";
+    }, 3000);
+}
+
+// GET: Read all students
+async function loadStudents() {
+    try {
+        const response = await fetch(API_URL);
+
+        if (!response.ok) {
+            throw new Error("Unable to load student records");
+        }
+
+        students = await response.json();
+
+        document.getElementById("dbStatus").textContent = "Connected";
+
+        renderStudents();
+
+    } catch (error) {
+        document.getElementById("dbStatus").textContent = "Offline";
+
+        document.getElementById("studentTable").innerHTML = `
+            <tr>
+                <td colspan="4" class="empty">
+                    Cannot connect to database API.
+                    Please start your backend server.
+                </td>
+            </tr>
+        `;
+
+        console.error(error);
+    }
+}
+
+// Display students
+function renderStudents() {
+
+    const table = document.getElementById("studentTable");
+
+    const search = document
+        .getElementById("searchInput")
+        .value.toLowerCase();
+
+    const filtered = students.filter(student => {
+
+        return (
+            student.name.toLowerCase().includes(search) ||
+            student.class.toLowerCase().includes(search) ||
+            String(student.rollNumber).toLowerCase().includes(search)
+        );
+
+    });
+
+    document.getElementById("totalStudents").textContent =
+        students.length;
+
+    document.getElementById("totalClasses").textContent =
+        new Set(students.map(s => s.class)).size;
+
+    if (filtered.length === 0) {
+        table.innerHTML = `
+            <tr>
+                <td colspan="4" class="empty">
+                    No student records found.
+                </td>
+            </tr>
+        `;
+        return;
+    }
+
+    table.innerHTML = filtered.map(student => `
+
+        <tr>
+            <td>
+                <div class="student-name">
+                    ${escapeHTML(student.name)}
+                </div>
+            </td>
+
+            <td>
+                <span class="badge">
+                    ${escapeHTML(student.class)}
+                </span>
+            </td>
+
+            <td>${escapeHTML(String(student.rollNumber))}</td>
+
+            <td>
+                <div class="actions">
+
+                    <button
+                        class="action-btn edit"
+                        onclick="editStudent('${student._id}')"
+                    >
+                        Edit
+                    </button>
+
+                    <button
+                        class="action-btn delete"
+                        onclick="deleteStudent('${student._id}')"
+                    >
+                        Delete
+                    </button>
+
+                </div>
+            </td>
+        </tr>
+
+    `).join("");
+
+}
+
+// Prevent HTML injection
+function escapeHTML(value) {
+    return String(value).replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+    })[char]);
+}
+
+// Open modal
+function openModal() {
+
+    document.getElementById("studentForm").reset();
+
+    document.getElementById("studentId").value = "";
+
+    document.getElementById("modalTitle").textContent =
+        "Add New Student";
+
+    document.getElementById("saveButton").textContent =
+        "Save Student";
+
+    document.getElementById("studentModal").classList.add("show");
+}
+
+// Close modal
+function closeModal() {
+    document.getElementById("studentModal").classList.remove("show");
+}
+
+// CREATE and UPDATE
+document.getElementById("studentForm").addEventListener(
+    "submit",
+    async function(event) {
+
+        event.preventDefault();
+
+        const id = document.getElementById("studentId").value;
+
+        const student = {
+            name: document.getElementById("studentName").value.trim(),
+            class: document.getElementById("studentClass").value,
+            rollNumber: document.getElementById("rollNumber").value.trim()
+        };
+
+        if (!student.name || !student.class || !student.rollNumber) {
+            showMessage("Please fill all fields.", "error");
+            return;
+        }
+
+        const url = id
+            ? `${API_URL}/${encodeURIComponent(id)}`
+            : API_URL;
+
+        const method = id ? "PUT" : "POST";
+
+        try {
+
+            const response = await fetch(url, {
+                method: method,
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(student)
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.message || "Operation failed");
+            }
+
+            showMessage(
+                id
+                    ? "Student updated successfully!"
+                    : "Student added successfully!",
+                "success"
+            );
+
+            closeModal();
+
+            await loadStudents();
+
+        } catch (error) {
+            showMessage(error.message, "error");
+        }
+
+    }
+);
+
+// Edit student
+function editStudent(id) {
+
+    const student = students.find(
+        item => String(item._id) === String(id)
+    );
+
+    if (!student) return;
+
+    document.getElementById("studentId").value = student._id;
+
+    document.getElementById("studentName").value = student.name;
+
+    document.getElementById("studentClass").value = student.class;
+
+    document.getElementById("rollNumber").value =
+        student.rollNumber;
+
+    document.getElementById("modalTitle").textContent =
+        "Update Student";
+
+    document.getElementById("saveButton").textContent =
+        "Update Student";
+
+    document.getElementById("studentModal").classList.add("show");
+}
+
+// DELETE
+async function deleteStudent(id) {
+
+    const confirmDelete = confirm(
+        "Are you sure you want to delete this student?"
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+
+        const response = await fetch(
+            `${API_URL}/${encodeURIComponent(id)}`,
+            { method: "DELETE" }
+        );
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(result.message || "Delete failed");
+        }
+
+        showMessage("Student deleted successfully!", "success");
+
+        await loadStudents();
+
+    } catch (error) {
+        showMessage(error.message, "error");
+    }
+}
+
+// Initial load
+loadStudents();
+
+</script>
+
+</body>
+</html>
